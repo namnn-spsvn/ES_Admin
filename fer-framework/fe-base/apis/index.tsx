@@ -1,13 +1,13 @@
 import {
-  BaseQueryFn,
   createApi,
-  EndpointBuilder,
   fetchBaseQuery,
-} from "@reduxjs/toolkit/query";
+  EndpointBuilder,
+  BaseQueryFn,
+} from "@reduxjs/toolkit/query/react";
 import { getToken } from "../uils/getToken";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: process.env.URL_SERVER,
+  baseUrl: "http://localhost:4000/api",
   prepareHeaders: (headers, { getState, endpoint }) => {
     headers.set("Content-Type", "application/json");
     const state = getState();
@@ -38,7 +38,7 @@ export const getBaseApi = <TParams extends Record<string, any>>(
       method: "GET",
       ...(params ? { params } : {}),
     }),
-    transformResponse: (response: { data: any }, meta, arg) => response.data,
+    transformResponse: (response: { data: any }, meta, arg) => response,
     ...((partial ?? {}) as any),
   });
 
@@ -54,7 +54,7 @@ export const postBaseApi = <TBody,>(
       method: "POST",
       body,
     }),
-    transformResponse: (response: { data: any }, meta, arg) => response.data,
+    transformResponse: (response: { data: any }, meta, arg) => response,
     ...((partial ?? {}) as any),
     transformErrorResponse: (baseQueryReturnValue: any, meta, arg) =>
       baseQueryReturnValue.data,
@@ -73,7 +73,7 @@ export const putBaseApi = <TBody, TParams>(
       body,
       ...(params ? { params } : {}),
     }),
-    transformResponse: (response: { data: any }, meta, arg) => response.data,
+    transformResponse: (response: { data: any }, meta, arg) => response,
     ...((partial ?? {}) as any),
     transformErrorResponse: (baseQueryReturnValue: any, meta, arg) =>
       baseQueryReturnValue.data,
@@ -92,7 +92,7 @@ export const patchBaseApi = <TBody, TParams>(
       body,
       ...(params ? { params } : {}),
     }),
-    transformResponse: (response: { data: any }, meta, arg) => response.data,
+    transformResponse: (response: { data: any }, meta, arg) => response,
     ...((partial ?? {}) as any),
     transformErrorResponse: (baseQueryReturnValue: any, meta, arg) =>
       baseQueryReturnValue.data,
@@ -110,8 +110,21 @@ export const deleteBaseApi = <DeleteParams,>(
       method: "DELETE",
       params,
     }),
-    transformResponse: (response: { data: any }, meta, arg) => response.data,
+    transformResponse: (response: { data: any }, meta, arg) => response,
     ...((partial ?? {}) as any),
     transformErrorResponse: (baseQueryReturnValue: any, meta, arg) =>
       baseQueryReturnValue.data,
   });
+
+export const createEndpoints = (
+  url: string,
+  slide: string,
+  builder: EndpointBuilder<BaseQueryFn, any, any>,
+  partial?: Partial<ReturnType<typeof builder.query>>
+) => ({
+  [`get${slide}`]: getBaseApi(url, builder, partial),
+  [`post${slide}`]: postBaseApi(url, builder),
+  [`put${slide}`]: putBaseApi(url, builder, partial),
+  [`patch${slide}`]: patchBaseApi(url, builder, partial),
+  [`delete${slide}`]: deleteBaseApi(url, builder, partial),
+});

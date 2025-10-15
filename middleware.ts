@@ -1,23 +1,19 @@
-import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
-import { decrypt } from "./app/login/lib/session";
-
-const publicRoutes = ["/login"];
 
 export default async function middleware(req: NextRequest) {
-  const path = req.nextUrl.pathname;
-  const isPublicRoute = publicRoutes.includes(path);
-
-  const cookie = (await cookies()).get("session")?.value;
-  const session = await decrypt(cookie);
-
-  if (!isPublicRoute && !session?.userId) {
-    return NextResponse.redirect(new URL("/login", req.nextUrl));
+  const token = req.cookies.get("token");
+  if (req.nextUrl.pathname === "" && token) {
+    return NextResponse.redirect(new URL("/home", req.url));
   }
-
-  if (isPublicRoute && session?.userId) {
-    return NextResponse.redirect(new URL("/home", req.nextUrl));
+  if (req.nextUrl.pathname.startsWith("/login") && token) {
+    return NextResponse.redirect(new URL("/home", req.url));
   }
-
-  return NextResponse.next();
+  if (!req.nextUrl.pathname.startsWith("/login") && !token) {
+    return NextResponse.redirect(new URL(`/login`, req.url));
+  }
 }
+
+export const config = {
+  //   matcher: '/about/:path*',
+  matcher: ["/login", "/home"],
+};
