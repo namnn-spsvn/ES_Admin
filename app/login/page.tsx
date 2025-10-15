@@ -1,11 +1,5 @@
 "use client";
 
-import { LoginForm } from "@/fer-framework/fe-module-auth/components/Login/LoginForm";
+import Login from "@/fer-framework/fe-module-auth/pages";
 
-export default function Login() {
-  return (
-    <div>
-      <LoginForm />
-    </div>
-  );
-}
+export default Login;

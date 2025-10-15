@@ -1,10 +1,9 @@
-import { combineReducers } from "@reduxjs/toolkit";
+import { createReducer } from "@/fer-framework/fe-base/reducers";
+import authSlice from "@/fer-framework/fe-module-auth/reducers";
 
-// Import các slice
-
-const rootReducer = combineReducers({
-  //...
+const appRootReducer = createReducer({
+  auth: authSlice,
 });
 
-export type RootState = ReturnType<typeof rootReducer>;
-export default rootReducer;
+export const reducer = (state: any, action: any) =>
+  appRootReducer(state, action);

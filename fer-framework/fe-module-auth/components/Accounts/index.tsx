@@ -1,3 +1,5 @@
+"use client";
+
 import {
   InfoCircleOutlined,
   LockOutlined,
@@ -6,37 +8,52 @@ import {
 } from "@ant-design/icons";
 import { Avatar, Dropdown } from "antd";
 import { MenuProps } from "antd/lib";
-import React from "react";
-import { logout } from "../Login/actions";
+import React, { useState } from "react";
+import { deleteCookie } from "cookies-next";
+import { useRouter } from "next/navigation";
+import ProfileModal from "../Profile";
 
 function Account() {
-  const handleLogout = async () => {
-    await logout(); // Gọi server action
-  };
+  const router = useRouter();
+
+  const [open, setOpen] = useState<string>("");
+  const onCancel = () => setOpen("");
+
+  const userInfor = JSON.parse(localStorage.getItem("user"));
+
   const items: MenuProps["items"] = [
     {
       key: "1",
-      label: <a href="/home">Profile</a>,
+      label: "Profile",
       icon: <InfoCircleOutlined />,
+      onClick: () => setOpen("profile"),
     },
     {
       key: "2",
-      label: <a href="/home">Change password</a>,
+      label: "Change password",
       icon: <LockOutlined />,
+      onClick: () => setOpen("change-password"),
     },
     {
       key: "3",
       label: "Logout",
       icon: <LogoutOutlined />,
-      onClick: handleLogout,
+      onClick: () => {
+        localStorage.removeItem("token");
+        deleteCookie("token");
+        router.refresh();
+      },
     },
   ];
   return (
-    <Dropdown trigger={["click"]} menu={{ items }}>
-      <a onClick={(e) => e.preventDefault()}>
-        <Avatar icon={<UserOutlined />} />
-      </a>
-    </Dropdown>
+    <>
+      <Dropdown trigger={["click"]} menu={{ items }}>
+        <a onClick={(e) => e.preventDefault()}>
+          <Avatar size={46} src={userInfor?.avatar_url} />
+        </a>
+      </Dropdown>
+      <ProfileModal open={open === "profile"} onCancel={onCancel} />
+    </>
   );
 }
 

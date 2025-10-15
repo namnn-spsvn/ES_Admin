@@ -1,15 +1,8 @@
-import { configureStore } from "@reduxjs/toolkit";
-import rootReducer from "./rootReducer";
-import { baseApi } from "@/fer-framework/fe-base/apis";
+import { store } from "fe-base/reducers";
 
-export const reduxStore = configureStore({
-  reducer: rootReducer,
-  [baseApi.reducerPath]: baseApi.reducer,
-  middleware(getDefaultMiddleware) {
-    return getDefaultMiddleware().concat(baseApi.middleware);
-  },
-});
+import { reducer } from "./rootReducer";
+import { _middleware } from "./middleware";
 
-export type RootState = ReturnType<typeof reduxStore.getState>;
+const reduxStore = store(reducer, _middleware);
 
-export type AppDispatch = typeof reduxStore.dispatch;
+export { reduxStore };
