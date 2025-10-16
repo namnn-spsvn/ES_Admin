@@ -8,16 +8,17 @@ const { Text, Title } = Typography;
 
 interface IProps extends CardProps {
   children: React.ReactNode;
-  key: any;
+  key: string;
+  width: number
 }
 
-function BCard(props: CardProps) {
-  const { children, key, ...other } = props;
+function BCard(props: IProps) {
+  const { children, key,width, ...other } = props;
   return (
     <ACard
       key={key}
       style={{
-        width: 280,
+        width: width,
         borderRadius: 12,
         boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
       }}

@@ -1,5 +1,5 @@
 import ACard from "@/fer-framework/fe-component/web/ACard";
-import BCard from "@/ts-framework/ts-component/Card";
+import BCard from "@/ts-framework/ts-component/Card/BCard";
 import { CustomerServiceOutlined } from "@ant-design/icons";
 import { Flex, Progress, Typography } from "antd";
 import { icons } from "antd/es/image/PreviewGroup";
@@ -17,7 +17,7 @@ interface IProps {
 function SkillCard(props: IProps) {
   const { icon, title, desc, link } = props;
   return (
-    <BCard>
+    <BCard >
       <Flex vertical gap={12} justify="center" align="center">
         {icon}
 
