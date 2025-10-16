@@ -6,12 +6,28 @@ export const authApis = baseApi.injectEndpoints({
       "/auth/login",
       builder
     ),
+
+    postSendCode: postBaseApi<{ email: string }>("/auth/send-code", builder),
+
+    postConfirmCode: postBaseApi<{ email: string }>("/auth/verify", builder),
+
     postRegister: postBaseApi<{
       username: string;
       email: string;
       password: string;
     }>("/auth/register", builder),
+
+    getUser: getBaseApi<{ id: number }>("/users/profile", builder, {
+      keepUnusedDataFor: 0,
+    }),
   }),
 });
 
-export const { usePostLoginMutation } = authApis;
+export const {
+  usePostLoginMutation,
+  usePostSendCodeMutation,
+  usePostConfirmCodeMutation,
+  usePostRegisterMutation,
+  useLazyGetUserQuery,
+  useGetUserQuery,
+} = authApis;

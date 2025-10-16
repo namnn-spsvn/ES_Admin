@@ -1,6 +1,9 @@
 import AModal from "@/fer-framework/fe-component/web/AModal";
 import { Avatar, Form, Image, Input, Select, Switch } from "antd";
 import React, { useEffect } from "react";
+import { authSelectors } from "../../reducers";
+import { useSelector } from "react-redux";
+import { useGetUserQuery } from "../../apis";
 
 interface IProps {
   open: boolean;
@@ -12,7 +15,13 @@ function ProfileModal(props: IProps) {
   const [form] = Form.useForm();
   // const user = useSelector((state: any) => authSelectors.getUser(state));
 
-  const userInfor = JSON.parse(localStorage.getItem("user"));
+  const userInfor = useSelector((state: any) => authSelectors.getUser(state));
+
+  const data = useGetUserQuery({ id: userInfor?.user?.id });
+
+  useEffect(() => {
+    form.setFieldsValue(data?.data?.user);
+  }, [data]);
 
   return (
     <AModal
@@ -26,7 +35,7 @@ function ProfileModal(props: IProps) {
           <CancelBtn />
         </>
       )}>
-      <Form form={form} initialValues={userInfor} layout="vertical" disabled>
+      <Form form={form} layout="vertical" disabled>
         <Form.Item name={"avatar_url"} label="Ảnh đại diện">
           {/* <Avatar size={64} src={userInfor?.avatar_url} preview={true}/> */}
           <Image
@@ -39,7 +48,7 @@ function ProfileModal(props: IProps) {
               objectFit: "cover",
               objectPosition: "center",
             }}
-            src={userInfor?.avatar_url}
+            src={userInfor?.user?.avatar_url}
             preview
           />
         </Form.Item>

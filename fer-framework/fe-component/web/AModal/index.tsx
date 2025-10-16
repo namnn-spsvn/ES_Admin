@@ -4,15 +4,19 @@ import { createStyles } from "antd-style";
 
 interface Props extends ModalProps {
   fullHeight?: boolean;
+  middleHeight?: boolean;
 }
 
 const AModal: React.FC<Props> = (props) => {
-  const { children, className, fullHeight, ...restProps } = props;
+  const { children, className, fullHeight, middleHeight, ...restProps } = props;
   const { styles, cx } = useStyles();
 
   const bodyStyle = useMemo(() => {
     if (fullHeight) {
       return { height: "calc(100vh - 180px)" };
+    }
+    if (middleHeight) {
+      return { height: "calc(100vh - 300px)" };
     }
     return {};
   }, [fullHeight]);

@@ -19,6 +19,10 @@ const themeConfig = {
       itemHoverBg: "#3868eb13",
       itemActiveColor: "#6a11cb",
     },
+    // Button: {
+    //   colorPrimary: "#2575fc",
+    //   colorPrimaryHover: "#2574fcb0",
+    // },
   },
 };
 

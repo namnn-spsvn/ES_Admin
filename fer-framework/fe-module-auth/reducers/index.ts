@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { authApis } from "../apis";
 
 // Kiểu dữ liệu cho thông tin user
 interface UserProfile {
@@ -27,24 +28,23 @@ const initialState: UserState = {
 export const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {
-    setLogin: (
-      state,
-      action: PayloadAction<{ user: UserProfile; token: string }>
-    ) => {
-      state.user = action.payload.user;
-      state.token = action.payload.token;
-      state.isAuthenticated = true;
-    },
-    setLogout: (state) => {
-      state.user = null;
-      state.token = null;
-      state.isAuthenticated = false;
-    },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addMatcher(authApis.endpoints.getUser.matchPending, (state) => {})
+      .addMatcher(
+        authApis.endpoints.getUser.matchFulfilled,
+        (state, action: any) => {
+          return action.payload;
+        }
+      )
+      .addMatcher(
+        authApis.endpoints.getUser.matchRejected,
+        (state, action) => {}
+      );
   },
-  extraReducers: (builder) => {},
   selectors: {
-    getUser: (state) => state.user,
+    getUser: (state) => state,
   },
 });
 
