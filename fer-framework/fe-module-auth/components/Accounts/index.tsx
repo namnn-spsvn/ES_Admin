@@ -12,6 +12,9 @@ import React, { useState } from "react";
 import { deleteCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 import ProfileModal from "../Profile";
+import { useSelector } from "react-redux";
+import { authSelectors } from "../../reducers";
+import ChangePassword from "../ChangePassword";
 
 function Account() {
   const router = useRouter();
@@ -19,7 +22,9 @@ function Account() {
   const [open, setOpen] = useState<string>("");
   const onCancel = () => setOpen("");
 
-  const userInfor = JSON.parse(localStorage.getItem("user"));
+  const userInfor = useSelector((state: any) => authSelectors.getUser(state));
+
+  console.log("userInfor>>", userInfor);
 
   const items: MenuProps["items"] = [
     {
@@ -49,10 +54,11 @@ function Account() {
     <>
       <Dropdown trigger={["click"]} menu={{ items }}>
         <a onClick={(e) => e.preventDefault()}>
-          <Avatar size={46} src={userInfor?.avatar_url} />
+          <Avatar size={46} src={userInfor?.user?.avatar_url} />
         </a>
       </Dropdown>
       <ProfileModal open={open === "profile"} onCancel={onCancel} />
+      <ChangePassword open={open === "change-password"} onCancel={onCancel} />
     </>
   );
 }

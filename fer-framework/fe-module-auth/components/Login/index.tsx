@@ -1,18 +1,26 @@
-import { Button, Card, Form, Input, Typography } from "antd";
+import { Button, Card, Divider, Flex, Form, Input, Typography } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { usePostLoginMutation } from "../../apis";
 import { setCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 import { memo } from "react";
+
+// Components
+import SignUp from "../SignUp";
+import ForgetPassword from "../ForgetPassword";
+
+// Apis
+import { useLazyGetUserQuery, usePostLoginMutation } from "../../apis";
 import { useDispatch } from "react-redux";
-import { authActions } from "../../reducers";
-import { url } from "inspector";
+import { userAgentFromString } from "next/server";
 
 const { Title } = Typography;
 
 function FormLogin() {
-  const dispatch = useDispatch();
   const [postLogin, { isLoading }] = usePostLoginMutation();
+  const [
+    triggerGetUser,
+    { data: userData, error: userError, isLoading: isUserLoading },
+  ] = useLazyGetUserQuery();
   const router = useRouter();
   const [form] = Form.useForm();
 
@@ -24,8 +32,9 @@ function FormLogin() {
       }).unwrap();
 
       setCookie("token", data.token);
-      // dispatch(authActions.setLogin(data));
-      localStorage.setItem("user", JSON.stringify(data.user));
+      const user = await triggerGetUser(data.user.id).unwrap();
+
+      localStorage.setItem("userId", JSON.stringify(data.user.id));
       router.push("/home");
     } catch (error) {
       console.log(error);
@@ -55,8 +64,13 @@ function FormLogin() {
           onFinish={onFinish}>
           <Form.Item
             name="email"
-            label="Email"
-            rules={[{ required: true, message: "Vui lòng nhập email!" }]}>
+            label="Email / Tài khoản"
+            rules={[
+              {
+                required: true,
+                message: "Vui lòng nhập email hoặc tài khoản!",
+              },
+            ]}>
             <Input
               prefix={<UserOutlined />}
               size="large"
@@ -80,6 +94,18 @@ function FormLogin() {
               Đăng nhập
             </Button>
           </Form.Item>
+
+          <Form.Item style={{ margin: 0 }}>
+            <Flex justify="center" align="center">
+              <ForgetPassword />
+            </Flex>
+          </Form.Item>
+
+          <Divider size="middle" style={{ borderWidth: 2 }} />
+
+          <Flex justify="center" align="center">
+            <SignUp />
+          </Flex>
         </Form>
       </Card>
     </div>
