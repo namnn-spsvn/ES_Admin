@@ -14,7 +14,7 @@ import { useRouter } from "next/navigation";
 import ProfileModal from "../Profile";
 import { useSelector } from "react-redux";
 import { authSelectors } from "../../reducers";
-import ChangePassword from "../ChangePassword";
+// import ChangePassword from "../ChangePassword";
 
 function Account() {
   const router = useRouter();
@@ -58,7 +58,7 @@ function Account() {
         </a>
       </Dropdown>
       <ProfileModal open={open === "profile"} onCancel={onCancel} />
-      <ChangePassword open={open === "change-password"} onCancel={onCancel} />
+      {/* <ChangePassword open={open === "change-password"} onCancel={onCancel} /> */}
     </>
   );
 }

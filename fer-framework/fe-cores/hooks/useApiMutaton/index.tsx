@@ -8,6 +8,7 @@ interface IProps {
   successMessage?: string;
 }
 
+
 // POST MUTATION
 export const usePostMutation = (props: IProps) => {
   const { useMutationHook, onSuccess, onError, successMessage } = props;

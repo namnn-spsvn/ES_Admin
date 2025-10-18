@@ -1,6 +1,7 @@
 import React from 'react';
 import { Space, Table, Tag } from 'antd';
 import type { TableProps } from 'antd';
+import { useGetFlashCardQuery } from '@/ts-framework/ts-module-flashcard/apis';
 
 interface DataType {
     key: string;
@@ -12,9 +13,8 @@ interface DataType {
 const columns: TableProps<DataType>['columns'] = [
     {
         title: 'Tên chủ đề',
-        dataIndex: 'name',
-        key: 'name',
-        render: (text) => <a>{text}</a>,
+        dataIndex: 'meaning_vi',
+        key: 'meaning_vi',
     },
     {
         title: 'Số lượng câu hỏi',
@@ -30,28 +30,32 @@ const columns: TableProps<DataType>['columns'] = [
     },
 ];
 
-const data: DataType[] = [
-    {
-        key: '1',
-        name: 'Cây cối xung quanh',
-        count: 32,
-        progress: 80
-    },
-    {
-        key: '2',
-        name: 'Cây cối xung quanh',
-        count: 32,
-        progress: 80
-    },
-    {
-        key: '3',
-        name: 'Cây cối xung quanh',
-        count: 32,
-        progress: 80
-    },
-];
+
+
+// const data: DataType[] = [
+//     {
+//         key: '1',
+//         name: 'Cây cối xung quanh',
+//         count: 32,
+//         progress: 80
+//     },
+//     {
+//         key: '2',
+//         name: 'Cây cối xung quanh',
+//         count: 32,
+//         progress: 80
+//     },
+//     {
+//         key: '3',
+//         name: 'Cây cối xung quanh',
+//         count: 32,
+//         progress: 80
+//     },
+// ];
 
 const TopicList: React.FC = () => {
+
+    const { data } = useGetFlashCardQuery(null)
 
     const handleRowClick = (record: DataType) => {
         console.log("Bạn vừa click vào:", record);
@@ -62,10 +66,16 @@ const TopicList: React.FC = () => {
             Chủ đề
             <Table<DataType>
                 columns={columns}
-                dataSource={data}
+                dataSource={data?.items}
                 onRow={(record) => ({
                     onClick: () => handleRowClick(record),
                 })}
+                pagination={
+                    {
+                        current: 1,
+                        pageSize: 5,
+                    }
+                }
                 rowClassName="cursor-pointer"
             />
         </div>
