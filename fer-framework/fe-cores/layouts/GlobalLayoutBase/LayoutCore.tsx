@@ -48,7 +48,8 @@ function LayoutCore({ children }: { children: React.ReactNode }) {
         <Footer style={{ textAlign: "center" }}>
           ES English ©{new Date().getFullYear()} Created by Long Ch1
         </Footer>
-        <div style={{ position: "fixed", right: 40, bottom: 40 }}>
+        <div
+          style={{ position: "fixed", zIndex: 9999999, right: 40, bottom: 40 }}>
           <ChatbotWrapper />
         </div>
       </Layout>

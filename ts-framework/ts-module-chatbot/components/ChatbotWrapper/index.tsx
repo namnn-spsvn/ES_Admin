@@ -21,15 +21,6 @@ function ChatbotWrapper() {
       title: "ESbot",
       buttons: [Button.CLOSE_CHAT_BUTTON],
     },
-
-    launcher: {
-      // ⚡ tùy chỉnh nút mở chat
-      icon: "💬",
-      label: "Hỏi tôi nhé!",
-      position: "right", // hoặc 'left'
-      showBadge: true, // có hiện số thông báo không
-      badgeColor: "#ff0000",
-    },
   };
 
   const styles = {

@@ -1,8 +1,11 @@
+"use client";
+
 import AModal from "@/fer-framework/fe-component/web/AModal";
-import BaseUploadImage from "@/fer-framework/fe-component/web/BaseUploadImage";
-import { Button, Form, Upload } from "antd";
-import { UploadFile } from "antd/lib";
-import React, { useState } from "react";
+import UploadFile from "@/fer-framework/fe-module-upload/components/UploadFile";
+import { PlusOutlined } from "@ant-design/icons";
+import { Button, Form, Input } from "antd";
+
+import React from "react";
 
 interface IProps {
   open: boolean;
@@ -17,6 +20,7 @@ function ChangePassword(props: IProps) {
   const click = () => {
     console.log("testt>>", form.getFieldsValue());
   };
+
   return (
     <AModal
       title={"Thông tin tài khoản"}
@@ -29,12 +33,27 @@ function ChangePassword(props: IProps) {
           <CancelBtn />
         </>
       )}>
-      <Form layout="vertical">
-        <Form.Item
-          name={"avatar_url"}
-          label="Ảnh đại diện"
-          valuePropName="value">
-          <BaseUploadImage />
+      <Form form={form} layout="vertical">
+        <Form.Item name={"avatar_url"} label="Ảnh đại diện">
+          <UploadFile
+            listType="picture-card"
+            // initValues={
+            //   "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+            // }
+            maxCount={1}
+            multiple={false}
+            maxSize={50}
+            accept="image/*"
+            returnObject={true}>
+            <button style={{ border: 0, background: "none" }} type="button">
+              <PlusOutlined />
+              <div style={{ marginTop: 8 }}>Upload</div>
+            </button>
+          </UploadFile>
+        </Form.Item>
+
+        <Form.Item name={"name"} label="Ảnh đại diện">
+          <Input />
         </Form.Item>
 
         <Form.Item>
