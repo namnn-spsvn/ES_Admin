@@ -2,18 +2,13 @@
 
 import { useParams } from "next/navigation";
 import React from "react";
+import BegginerExcercise from "./Begginer";
 
 function Excercise() {
   const params = useParams();
   const { topic, level, id } = params;
 
-  return (
-    <div>
-      <h1> Chủ đề: {decodeURIComponent(topic)}</h1>
-      <p> Cấp độ: {level}</p>
-      <p> ID: {id}</p>
-    </div>
-  );
+  return <>{level === "begginer" && <BegginerExcercise />}</>;
 }
 
 export default Excercise;

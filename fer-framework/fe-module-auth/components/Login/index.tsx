@@ -1,3 +1,5 @@
+"use client";
+
 import { Button, Card, Divider, Flex, Form, Input, Typography } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { setCookie } from "cookies-next";
@@ -10,8 +12,6 @@ import ForgetPassword from "../ForgetPassword";
 
 // Apis
 import { useLazyGetUserQuery, usePostLoginMutation } from "../../apis";
-import { useDispatch } from "react-redux";
-import { userAgentFromString } from "next/server";
 import { toast, ToastContainer } from "react-toastify";
 
 const { Title } = Typography;
@@ -27,10 +27,13 @@ function FormLogin() {
 
   const onFinish = async (values: any) => {
     try {
-      const data = await postLogin({
-        usernameOrEmail: values.email,
-        password: values.password,
-      }).unwrap();
+      const data = await postLogin(
+        {
+          usernameOrEmail: values.email,
+          password: values.password,
+        },
+        null
+      ).unwrap();
 
       setCookie("token", data.token);
       const user = await triggerGetUser(data.user.id).unwrap();
