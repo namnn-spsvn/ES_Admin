@@ -9,16 +9,18 @@ interface IProps {
   title: string;
   code: string;
   desc: string;
+  isActive: boolean;
 }
 
 function LevelCard(props: IProps) {
-  const { title, code, desc } = props;
+  const { title, code, desc, isActive } = props;
   return (
     <ACard
       style={{
         width: 400,
         borderRadius: 12,
         boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+        backgroundColor: isActive ? "#6b11cb3e" : "#ffffff",
       }}
       styles={{
         body: {

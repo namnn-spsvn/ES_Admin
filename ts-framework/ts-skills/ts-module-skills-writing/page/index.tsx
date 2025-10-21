@@ -1,8 +1,8 @@
 import React from "react";
-import CKEditorWrapper from "@/ts-framework/ts-component/CKEditorWrapper";
+import LevelsTabs from "../components/Levels";
 
 function WritingPage() {
-  return <CKEditorWrapper isDisabled={false} height={500} />;
+  return <LevelsTabs />;
 }
 
 export default WritingPage;

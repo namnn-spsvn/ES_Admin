@@ -1,6 +1,6 @@
-"use cleint";
+"use client";
 import { useState, useEffect } from "react";
-import { useResponsive } from "ahooks";
+import { useResponsive } from "antd-style";
 import { useTheme } from "antd-style";
 
 export const useResponsivePadding = () => {
