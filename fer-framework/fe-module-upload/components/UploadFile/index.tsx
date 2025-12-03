@@ -19,6 +19,7 @@ interface Props extends UploadProps {
   returnObject: boolean;
   children?: any;
   pathUrl?: string;
+  handleSaveImage?: (url: any) => void;
 }
 
 const UploadFileBase = (props: Props) => {
@@ -28,6 +29,7 @@ const UploadFileBase = (props: Props) => {
     returnObject,
     children,
     pathUrl,
+    handleSaveImage,
     ...otherProps
   } = props;
   const [previewOpen, setPreviewOpen] = useState(false);
@@ -40,22 +42,22 @@ const UploadFileBase = (props: Props) => {
       returnObject
         ? initValues
           ? [
-              {
-                uid: `1`,
-                name: "image.png",
-                status: "done",
-                url: initValues || "",
-                response: initValues || "",
-              },
-            ]
+            {
+              uid: `1`,
+              name: "image.png",
+              status: "done",
+              url: initValues || "",
+              response: initValues || "",
+            },
+          ]
           : []
         : (initValues || []).map((url: string, index: number) => ({
-            uid: `${index}`,
-            name: "image.png",
-            status: "done",
-            url: url,
-            response: url,
-          }))
+          uid: `${index}`,
+          name: "image.png",
+          status: "done",
+          url: url,
+          response: url,
+        }))
     );
   }, [initValues]);
 
@@ -91,6 +93,8 @@ const UploadFileBase = (props: Props) => {
       if (!res.ok) throw new Error("Upload failed");
 
       const data = await res.json();
+      handleSaveImage && handleSaveImage(data?.url);
+
       onSuccess(data?.url);
     } catch (err) {
       onError(err);
@@ -102,14 +106,19 @@ const UploadFileBase = (props: Props) => {
     fileList: newFileList,
   }) => {
     setFileList(newFileList);
+    if (!onChangeProps) return;
     if (file && (file?.status === "done" || file?.status === "removed")) {
-      returnObject
-        ? onChangeProps(file?.status === "removed" ? "" : file?.response)
-        : onChangeProps(
-            newFileList
-              .filter((item: any) => item.status === "done")
-              .map((item: any) => item.response)
-          );
+      if (returnObject) {
+        (onChangeProps as any)(
+          file?.status === "removed" ? "" : file?.response
+        );
+      } else {
+        (onChangeProps as any)(
+          newFileList
+            .filter((item: any) => item.status === "done")
+            .map((item: any) => item.response)
+        );
+      }
     }
   };
 

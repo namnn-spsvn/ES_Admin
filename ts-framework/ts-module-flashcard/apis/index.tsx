@@ -1,11 +1,49 @@
-import { baseApi, deleteBaseApi, getBaseApi, postBaseApi } from "fe-base/apis";
+import { baseApi, getBaseApi, postBaseApi, putBaseApi } from "fe-base/apis";
 
-export const authApis = baseApi.injectEndpoints({
+export const flashcardApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getFlashCard: getBaseApi("/vocab/flashcards", builder, {
-      keepUnusedDataFor: 0
-    })
+    //  danh sách flashcards
+    getFlashcardById: getBaseApi("vocab/flashcards", builder, {
+      keepUnusedDataFor: 0,
+    }),
+
+    //  danh sách topic FLASHCARD
+    getFlashCard: getBaseApi("/admin/catalog/topics?type=FLASHCARD", builder, {
+      keepUnusedDataFor: 0,
+    }),
+
+    // thêm mới flashcard
+    createFlashcard: builder.mutation({
+      query: (data) => ({
+        url: "vocab/flashcards",
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    //  cập nhật
+    updateFlashcard: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `vocab/flashcards/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
+    //api xóa 1 
+    deleteFlashcard: builder.mutation({
+      query: (id) => ({
+        url: `/vocab/flashcards/${id}`,
+        method: "DELETE",
+      }),
+    }),
+
   }),
 });
 
-export const { useGetFlashCardQuery } = authApis;
+export const {
+  useGetFlashcardByIdQuery,
+  useGetFlashCardQuery,
+  useCreateFlashcardMutation,
+  useUpdateFlashcardMutation,
+  useDeleteFlashcardMutation
+} = flashcardApi;

@@ -8,18 +8,7 @@ import {
 } from "@ant-design/icons";
 
 export const items: MenuItem[] = [
-  {
-    key: "home",
-    icon: <HomeOutlined />,
-    label: "Trang chủ",
-    link: "/home",
-  },
-  {
-    key: "progress",
-    icon: <LineChartOutlined />,
-    label: "Tiến độ",
-    link: "/progress",
-  },
+
   {
     key: "skills",
     icon: <UserOutlined />,
@@ -42,6 +31,18 @@ export const items: MenuItem[] = [
     key: "test",
     icon: <FileTextOutlined />,
     label: "Thi thử",
-    link: "/flashcard",
+    link: "/mock_test",
+  },
+  {
+    key: "user",
+    icon: <FileTextOutlined />,
+    label: "Người dùng",
+    link: "/user",
+  },
+  {
+    key: "account",
+    icon: <FileTextOutlined />,
+    label: "Tài khoản",
+    link: "/account",
   },
 ];

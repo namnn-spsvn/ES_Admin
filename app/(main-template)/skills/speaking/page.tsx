@@ -1,5 +1,5 @@
 "use client";
 
-import WritingPage from "@/ts-framework/ts-skills/ts-module-skills-writing/page";
+import SpeakingPage from "@/ts-framework/ts-skills/ts-module-skills-speaking/page";
 
-export default WritingPage;
+export default SpeakingPage;

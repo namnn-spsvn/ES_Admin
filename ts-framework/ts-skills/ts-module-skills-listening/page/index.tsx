@@ -1,8 +1,13 @@
 import React from "react";
-import LevelsTabs from "../components/Levels";
+import Levels from "../../../ts-component/LevelList";
+import TopicTable from "../components/Topics";
 
-function ListeningPage() {
-    return <LevelsTabs />;
+function ListeningManager() {
+  return (
+    <div>
+      <TopicTable level_id="" skill_id="68ed254ce5c75afc72ea3c28"/>
+    </div>
+  );
 }
 
-export default ListeningPage;
+export default ListeningManager;
