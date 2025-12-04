@@ -43,5 +43,5 @@ export default function OptionCard({ option, onChange, onSelectCorrect }: Props)
                 </Button>
             </div>
         </Card>
-    );hưa p
+    );
 }

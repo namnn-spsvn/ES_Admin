@@ -7,11 +7,7 @@ import {
 import { getToken } from "../uils/getToken";
 
 const baseQuery = fetchBaseQuery({
-<<<<<<< HEAD
-  baseUrl: "https://apiesenglish-y99l.onrender.com/api",
-=======
   baseUrl: process.env.NEXT_PUBLIC_API_URL,
->>>>>>> 94b768043cdc610bd1d1050c470e39b6e04952ee
   prepareHeaders: (headers, { getState, endpoint }) => {
     headers.set("Content-Type", "application/json");
     const state = getState();
