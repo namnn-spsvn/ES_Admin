@@ -1,5 +1,7 @@
-import { message } from "antd";
+"use client";
+
 import { useCallback } from "react";
+import { useMessage } from "../../components/MessageProvider";
 
 interface IProps {
   useMutationHook: any;
@@ -8,15 +10,16 @@ interface IProps {
   successMessage?: string;
 }
 
-
 // POST MUTATION
 export const usePostMutation = (props: IProps) => {
   const { useMutationHook, onSuccess, onError, successMessage } = props;
 
   const [mutationFn, { isLoading, isSuccess }] = useMutationHook();
 
+  const { message } = useMessage();
+
   const callPostApi = useCallback(
-    async (body) => {
+    async (body: any) => {
       try {
         const data = await mutationFn(body);
         if (successMessage) message.success(successMessage);
@@ -25,7 +28,7 @@ export const usePostMutation = (props: IProps) => {
         if (onError) onError(error);
       }
     },
-    [mutationHook, onSuccess, onError, successMessage]
+    [useMutationHook, onSuccess, onError, successMessage]
   );
 
   return { callPostApi, isLoading, isSuccess };
@@ -34,11 +37,11 @@ export const usePostMutation = (props: IProps) => {
 // PUT MUTATION
 export const usePutMutation = (props: IProps) => {
   const { useMutationHook, onSuccess, onError, successMessage } = props;
-
   const [mutationFn, { isLoading, isSuccess }] = useMutationHook();
+  const { message } = useMessage();
 
   const callPutApi = useCallback(
-    async ({ body, prams }) => {
+    async ({ body, prams }: { body: any; prams?: any }) => {
       try {
         const data = await mutationFn({ body, prams });
         if (successMessage) message.success(successMessage);
@@ -47,7 +50,7 @@ export const usePutMutation = (props: IProps) => {
         if (onError) onError(error);
       }
     },
-    [mutationHook, onSuccess, onError, successMessage]
+    [mutationFn, onSuccess, onError, successMessage]
   );
 
   return { callPutApi, isLoading, isSuccess };
@@ -56,11 +59,11 @@ export const usePutMutation = (props: IProps) => {
 // DELETE MUTATION
 export const useDeleteMutation = (props: IProps) => {
   const { useMutationHook, onSuccess, onError, successMessage } = props;
-
   const [mutationFn, { isLoading, isSuccess }] = useMutationHook();
+  const { message } = useMessage();
 
   const callDeleteApi = useCallback(
-    async ({ prams }) => {
+    async ({ prams }: { prams?: any }) => {
       try {
         const data = await mutationFn({ prams });
         if (successMessage) message.success(successMessage);
@@ -69,7 +72,7 @@ export const useDeleteMutation = (props: IProps) => {
         if (onError) onError(error);
       }
     },
-    [mutationHook, onSuccess, onError, successMessage]
+    [mutationFn, onSuccess, onError, successMessage]
   );
 
   return { callDeleteApi, isLoading, isSuccess };

@@ -35,7 +35,7 @@ function ProfileModal(props: IProps) {
 
   const userInfor = useSelector((state: any) => authSelectors.getUser(state));
 
-  const { data, refetch } = useGetUserQuery({ id: userInfor?.user?.id });
+  const { data, refetch } = useGetUserQuery({ id: userInfor?.user?.id as any });
 
   const [editUser, { isLoading }] = useEditUserMutation();
 

@@ -40,7 +40,7 @@ function FormLogin() {
       router.push("/home");
     } catch (error) {
       console.log(error);
-      toast.error(error?.message || "Lỗi xác thực");
+      toast.error((error as any)?.message || "Lỗi xác thực");
     }
   };
 
