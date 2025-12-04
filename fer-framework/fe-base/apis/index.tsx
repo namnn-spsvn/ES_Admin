@@ -7,7 +7,7 @@ import {
 import { getToken } from "../uils/getToken";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:4000/api",
+  baseUrl: "https://apiesenglish-y99l.onrender.com/api",
   prepareHeaders: (headers, { getState, endpoint }) => {
     headers.set("Content-Type", "application/json");
     const state = getState();

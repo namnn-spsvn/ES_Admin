@@ -412,8 +412,7 @@ export default function TopicDetailPage() {
                     padding: 12,
                     boxShadow: "0 2px 12px rgba(0,0,0,0.04)",
                 }}
-                headStyle={{ padding: "10px 14px" }}
-                bodyStyle={{ padding: 14 }}
+
             >
                 {/* ============================
                 EDIT MODE
@@ -425,8 +424,6 @@ export default function TopicDetailPage() {
                             size="small"
                             style={{ borderRadius: 8, marginBottom: 14 }}
                             title={<Text strong>Audio</Text>}
-                            headStyle={{ padding: "8px 10px" }}
-                            bodyStyle={{ padding: 10 }}
                         >
                             <Space align="center" style={{ marginBottom: 8 }}>
                                 <Button
@@ -483,8 +480,7 @@ export default function TopicDetailPage() {
                             size="small"
                             style={{ borderRadius: 8, marginBottom: 14 }}
                             title={<Text strong>Nội dung đoạn văn</Text>}
-                            headStyle={{ padding: "8px 10px" }}
-                            bodyStyle={{ padding: 10 }}
+
                         >
                             <Input.TextArea
                                 rows={3}
@@ -502,8 +498,7 @@ export default function TopicDetailPage() {
                             size="small"
                             style={{ borderRadius: 8, marginBottom: 14 }}
                             title={<Text strong>Câu hỏi</Text>}
-                            headStyle={{ padding: "8px 10px" }}
-                            bodyStyle={{ padding: 10 }}
+
                         >
                             <Input
                                 size="small"
@@ -548,8 +543,7 @@ export default function TopicDetailPage() {
                             size="small"
                             style={{ borderRadius: 8, marginBottom: 14 }}
                             title={<Text strong>Nội dung đoạn văn</Text>}
-                            headStyle={{ padding: "8px 10px" }}
-                            bodyStyle={{ padding: 10 }}
+
                         >
                             <Input.TextArea
                                 rows={3}
@@ -565,8 +559,6 @@ export default function TopicDetailPage() {
                             size="small"
                             style={{ borderRadius: 8, marginBottom: 14 }}
                             title={<Text strong>Audio</Text>}
-                            headStyle={{ padding: "8px 10px" }}
-                            bodyStyle={{ padding: 10 }}
                         >
                             <Space align="center" style={{ marginBottom: 8 }}>
                                 <Button
@@ -600,8 +592,6 @@ export default function TopicDetailPage() {
                             size="small"
                             style={{ borderRadius: 8, marginBottom: 14 }}
                             title={<Text strong>Ảnh minh họa</Text>}
-                            headStyle={{ padding: "8px 10px" }}
-                            bodyStyle={{ padding: 10 }}
                         >
                             <UploadFileBase
                                 listType="picture-card"
@@ -622,8 +612,6 @@ export default function TopicDetailPage() {
                             size="small"
                             style={{ borderRadius: 8, marginBottom: 14 }}
                             title={<Text strong>Câu hỏi</Text>}
-                            headStyle={{ padding: "8px 10px" }}
-                            bodyStyle={{ padding: 10 }}
                         >
                             <Input.TextArea
                                 rows={2}
@@ -638,8 +626,7 @@ export default function TopicDetailPage() {
                             size="small"
                             style={{ borderRadius: 8, marginBottom: 14 }}
                             title={<Text strong>Đáp án</Text>}
-                            headStyle={{ padding: "8px 10px" }}
-                            bodyStyle={{ padding: 10 }}
+
                         >
                             <Row gutter={[12, 12]}>
                                 {options.map((opt, idx) => (

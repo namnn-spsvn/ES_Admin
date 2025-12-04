@@ -1,7 +1,19 @@
-import type { NextConfig } from "next";
+const nextConfig = {
+  transpilePackages: [
+    "antd",
+    "@ant-design/icons",
+    "@ant-design/icons-svg",
+    "antd-style"
+  ],
+  webpack: (config) => {
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      fs: false,
+      path: false
+    };
 
-const nextConfig: NextConfig = {
-  /* config options here */
+    return config;
+  },
 };
 
-export default nextConfig;
+module.exports = nextConfig;
