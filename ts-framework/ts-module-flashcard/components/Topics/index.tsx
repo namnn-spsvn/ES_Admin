@@ -1,6 +1,6 @@
 import ATable from "@/fer-framework/fe-component/web/ATable";
 import React, { useMemo, useState } from "react";
-import { Typography, Modal, Form, Input, Select, Button, message } from "antd";
+import { Typography, Modal, Form, Input, Select, Button, message, Card } from "antd";
 import {
   DeleteFilled,
   EditOutlined,
@@ -21,7 +21,9 @@ import ACard from "@/fer-framework/fe-component/web/ACard";
 import HeaderOperation from "@/fer-framework/fe-component/web/ATable/HeaderOperation";
 import { useRouter } from "next/navigation";
 import TableActions from "@/fer-framework/fe-component/web/ATable/TableActions";
-
+import UploadFileBase from "@/fer-framework/fe-module-upload/components/UploadFile";
+import UploadVideo from "@/fer-framework/fe-module-upload/components/UploadVideo";
+const { Text, Title } = Typography;
 const { Option } = Select;
 
 const FlashcardTable: React.FC = () => {
@@ -255,7 +257,6 @@ const FlashcardTable: React.FC = () => {
         />
       </ACard>
 
-      {/* ====================== EDIT MODAL ====================== */}
       <Modal
         title="Chỉnh sửa Flashcard"
         open={isModalVisible}
@@ -264,7 +265,8 @@ const FlashcardTable: React.FC = () => {
         okButtonProps={{ loading: updating }}
         width={750}
         okText="Lưu thay đổi"
-        cancelText="Hủy">
+        cancelText="Hủy"
+      >
         <Form form={form} layout="vertical">
           <Form.Item name="word" label="Từ vựng" rules={[{ required: true }]}>
             <Input />
@@ -275,8 +277,15 @@ const FlashcardTable: React.FC = () => {
           </Form.Item>
 
           <Form.Item name="part_of_speech" label="Từ loại">
-            <Input />
+            <Select placeholder="Chọn từ loại">
+              <Option value="noun">Noun (Danh từ)</Option>
+              <Option value="verb">Verb (Động từ)</Option>
+              <Option value="adjective">Adjective (Tính từ)</Option>
+              <Option value="adverb">Adverb (Trạng từ)</Option>
+            </Select>
           </Form.Item>
+
+
 
           <Form.Item name="meaning_vi" label="Nghĩa tiếng Việt">
             <Input />
@@ -289,33 +298,77 @@ const FlashcardTable: React.FC = () => {
           <Form.Item name="example_vi" label="Ví dụ tiếng Việt">
             <Input.TextArea rows={2} />
           </Form.Item>
-
-          <Form.Item name="image_url" label="Link ảnh">
-            <Input onChange={(e) => setPreviewImage(e.target.value)} />
-            {previewImage && (
-              <img
-                src={previewImage}
-                style={{
-                  width: 140,
-                  height: 140,
-                  marginTop: 10,
-                  borderRadius: 8,
-                  objectFit: "cover",
+          <Form.Item name="image_url" label="Ảnh minh họa">
+            <Card
+              size="small"
+              style={{ borderRadius: 8, marginBottom: 14 }}
+              title="Ảnh minh họa"
+            >
+              <UploadFileBase
+                initValues={previewImage}
+                listType="picture-card"
+                maxCount={1}
+                accept="image/*"
+                handleSaveImage={(url) => {
+                  setPreviewImage(url);
+                  form.setFieldsValue({ image_url: url });
                 }}
-              />
-            )}
-          </Form.Item>
+                returnObject
+              >
+                <button style={{ border: 0, background: "none" }} type="button">
+                  <PlusOutlined />
+                  <div style={{ marginTop: 4, fontSize: 12 }}>Upload</div>
+                </button>
+              </UploadFileBase>
 
-          <Form.Item name="audio_url" label="Audio URL">
-            <Input onChange={(e) => setPreviewAudio(e.target.value)} />
-            {previewAudio && (
-              <Button
-                style={{ marginTop: 8 }}
-                icon={<SoundOutlined />}
-                onClick={() => new Audio(previewAudio).play()}>
-                Nghe thử
-              </Button>
-            )}
+              {previewImage && (
+                <img
+                  src={previewImage}
+                  style={{
+                    width: 140,
+                    height: 140,
+                    marginTop: 10,
+                    borderRadius: 8,
+                    objectFit: "cover",
+                  }}
+                />
+              )}
+            </Card>
+          </Form.Item>
+          <Form.Item name="audio_url" label="Audio">
+            <Card
+              size="small"
+              style={{ borderRadius: 8, marginBottom: 14 }}
+              title="Audio"
+            >
+              {previewAudio && (
+                <Button
+                  type="primary"
+                  icon={<SoundOutlined />}
+                  onClick={() => new Audio(previewAudio).play()}
+                  style={{ marginBottom: 8 }}
+                >
+                  Nghe thử
+                </Button>
+              )}
+
+              <UploadVideo
+                listType="picture-card"
+                maxCount={1}
+                initValues={previewAudio}
+                accept="audio/*"
+                handleSaveVideo={(url) => {
+                  setPreviewAudio(url);
+                  form.setFieldsValue({ audio_url: url });
+                }}
+                returnObject
+              >
+                <button style={{ border: 0, background: "none" }} type="button">
+                  <PlusOutlined />
+                  <div style={{ marginTop: 4, fontSize: 12 }}>Upload</div>
+                </button>
+              </UploadVideo>
+            </Card>
           </Form.Item>
 
           <Form.Item name="topic_id" label="Chủ đề">
@@ -329,6 +382,8 @@ const FlashcardTable: React.FC = () => {
           </Form.Item>
         </Form>
       </Modal>
+
+
       {/* ====================== CREATE MODAL ====================== */}
       <Modal
         title="Tạo flashcard mới"
@@ -343,7 +398,8 @@ const FlashcardTable: React.FC = () => {
         okButtonProps={{ loading: creating }}
         width={750}
         okText="Tạo mới"
-        cancelText="Hủy">
+        cancelText="Hủy"
+      >
         <Form layout="vertical" form={createForm}>
           <Form.Item name="word" label="Từ vựng" rules={[{ required: true }]}>
             <Input />
@@ -353,9 +409,16 @@ const FlashcardTable: React.FC = () => {
             <Input />
           </Form.Item>
 
-          <Form.Item name="part_of_speech" label="Từ loại">
-            <Input />
+          <Form.Item name="part_of_speech" label="Từ loại" rules={[{ required: true }]}>
+            <Select placeholder="Chọn từ loại">
+              <Option value="noun">Noun (Danh từ)</Option>
+              <Option value="verb">Verb (Động từ)</Option>
+              <Option value="adjective">Adjective (Tính từ)</Option>
+              <Option value="adverb">Adverb (Trạng từ)</Option>
+            </Select>
           </Form.Item>
+
+
 
           <Form.Item name="meaning_vi" label="Nghĩa tiếng Việt">
             <Input />
@@ -368,39 +431,76 @@ const FlashcardTable: React.FC = () => {
           <Form.Item name="example_vi" label="Ví dụ tiếng Việt">
             <Input.TextArea rows={2} />
           </Form.Item>
-
-          <Form.Item name="image_url" label="Link ảnh">
-            <Input onChange={(e) => setCreatePreviewImage(e.target.value)} />
-            {createPreviewImage && (
-              <img
-                src={createPreviewImage}
-                style={{
-                  width: 140,
-                  height: 140,
-                  marginTop: 10,
-                  borderRadius: 8,
-                  objectFit: "cover",
+          <Form.Item name="image_url" label="Ảnh minh họa">
+            <Card
+              size="small"
+              title="Ảnh minh họa"
+              style={{ borderRadius: 8 }}
+            >
+              <UploadFileBase
+                listType="picture-card"
+                maxCount={1}
+                accept="image/*"
+                initValues={createPreviewImage}
+                handleSaveImage={(url) => {
+                  setCreatePreviewImage(url);
+                  createForm.setFieldsValue({ image_url: url });
                 }}
-              />
-            )}
+                returnObject
+              >
+                <button style={{ border: 0, background: "none" }} type="button">
+                  <PlusOutlined />
+                  <div style={{ marginTop: 4, fontSize: 12 }}>Upload</div>
+                </button>
+              </UploadFileBase>
+
+              {createPreviewImage && (
+                <img
+                  src={createPreviewImage}
+                  style={{
+                    width: 140,
+                    height: 140,
+                    marginTop: 10,
+                    borderRadius: 8,
+                    objectFit: "cover",
+                  }}
+                />
+              )}
+            </Card>
           </Form.Item>
 
-          <Form.Item name="audio_url" label="Audio URL">
-            <Input onChange={(e) => setCreatePreviewAudio(e.target.value)} />
-            {createPreviewAudio && (
-              <Button
-                style={{ marginTop: 8 }}
-                icon={<SoundOutlined />}
-                onClick={() => new Audio(createPreviewAudio).play()}>
-                Nghe thử
-              </Button>
-            )}
+          <Form.Item name="audio_url" label="Audio">
+            <Card size="small" title="Audio">
+              {createPreviewAudio && (
+                <Button
+                  icon={<SoundOutlined />}
+                  onClick={() => new Audio(createPreviewAudio).play()}
+                  style={{ marginBottom: 8 }}
+                >
+                  Nghe thử
+                </Button>
+              )}
+
+              <UploadVideo
+                listType="picture-card"
+                maxCount={1}
+                accept="audio/*"
+                initValues={createPreviewAudio}
+                handleSaveVideo={(url) => {
+                  setCreatePreviewAudio(url);
+                  createForm.setFieldsValue({ audio_url: url });
+                }}
+                returnObject
+              >
+                <button style={{ border: 0, background: "none" }} type="button">
+                  <PlusOutlined />
+                  <div style={{ marginTop: 4, fontSize: 12 }}>Upload</div>
+                </button>
+              </UploadVideo>
+            </Card>
           </Form.Item>
 
-          <Form.Item
-            name="topic_id"
-            label="Chủ đề"
-            rules={[{ required: true }]}>
+          <Form.Item name="topic_id" label="Chủ đề" rules={[{ required: true }]}>
             <Select placeholder="Chọn chủ đề">
               {topics.map((t: any) => (
                 <Option key={t._id} value={t._id}>
@@ -411,6 +511,7 @@ const FlashcardTable: React.FC = () => {
           </Form.Item>
         </Form>
       </Modal>
+
     </div>
   );
 };

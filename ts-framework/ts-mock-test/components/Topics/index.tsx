@@ -172,7 +172,7 @@ const MockTestTable: React.FC = () => {
       <ToastContainer />
 
       <Typography.Title level={3} style={{ color: "#6a11cb" }}>
-        Quản lý đề thi thử (Mock Test)
+        Quản lý đề thi thử
       </Typography.Title>
 
       <ACard>

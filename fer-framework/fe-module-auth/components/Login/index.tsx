@@ -100,16 +100,16 @@ function FormLogin() {
           </Form.Item>
 
           <Form.Item style={{ margin: 0 }}>
-            <Flex justify="center" align="center">
+            {/* <Flex justify="center" align="center">
               <ForgetPassword />
-            </Flex>
+            </Flex> */}
           </Form.Item>
 
           <Divider size="middle" style={{ borderWidth: 2 }} />
 
-          <Flex justify="center" align="center">
+          {/* <Flex justify="center" align="center">
             <SignUp />
-          </Flex>
+          </Flex> */}
         </Form>
       </Card>
     </div>

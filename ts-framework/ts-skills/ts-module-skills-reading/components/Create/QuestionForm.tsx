@@ -72,7 +72,7 @@ export default function QuestionForm({ title, level, topicId, onSave }: Props) {
         return toast.warning("Vui lòng chọn đáp án đúng!");
 
       const contentPayload: any = {
-        title: questionText,
+        title: title,
         type: "READING_PASSAGE",
         topic_id: topicId,
         is_published: true,

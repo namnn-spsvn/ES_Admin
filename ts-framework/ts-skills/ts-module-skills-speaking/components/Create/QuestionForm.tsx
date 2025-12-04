@@ -69,7 +69,7 @@ export default function QuestionForm({ title, level, topicId, onSave }: Props) {
       if (!imageUrl.trim()) return toast.warning("Vui lòng nhập hình ảnh!");
 
       const contentPayload: any = {
-        title: questionText,
+        title: title,
         type: "SPEAKING_PROMPT",
         topic_id: topicId,
         is_published: true,

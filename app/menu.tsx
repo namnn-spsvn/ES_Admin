@@ -35,14 +35,8 @@ export const items: MenuItem[] = [
   },
   {
     key: "user",
-    icon: <FileTextOutlined />,
+    icon: <UserOutlined />,
     label: "Người dùng",
     link: "/user",
-  },
-  {
-    key: "account",
-    icon: <FileTextOutlined />,
-    label: "Tài khoản",
-    link: "/account",
   },
 ];

@@ -89,7 +89,20 @@ export const contentApi = baseApi.injectEndpoints({
             }),
         }),
 
-
+        //xóa content 
+        deleteContent: builder.mutation({
+            query: (contentId) => ({
+                url: `/admin/content/${contentId}`,
+                method: "DELETE",
+            }),
+        }),
+        //xóa question
+        deleteQuestion: builder.mutation({
+            query: (questionId) => ({
+                url: `/admin/question/${questionId}`,
+                method: "DELETE",
+            }),
+        }),
     }),
 });
 
@@ -101,6 +114,8 @@ export const topicApi = baseApi.injectEndpoints({
 
 export const { useCreateTopicMutation } = topicApi;
 export const {
+    useDeleteContentMutation,
+    useDeleteQuestionMutation,
     useDeleteTopicMutation,
     useGetContentQuery,
     useGetContentDetailQuery,
