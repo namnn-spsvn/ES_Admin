@@ -1,13 +1,6 @@
 import ATable from "@/fer-framework/fe-component/web/ATable";
 import React, { useState } from "react";
-import {
-  Typography,
-  Button,
-  Modal,
-  Form,
-  Input,
-  Select,
-} from "antd";
+import { Typography, Button, Modal, Form, Input, Select } from "antd";
 import { DeleteFilled, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import { ColumnProps } from "antd/es/table";
 import {
@@ -46,8 +39,8 @@ const UserTable: React.FC = () => {
       };
     },
     config: ["username", "email"],
+    paramsApi: {},
   });
-
 
   const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
   const [createForm] = Form.useForm();
@@ -57,7 +50,6 @@ const UserTable: React.FC = () => {
       const values = await createForm.validateFields();
 
       const payload = {
-
         username: values.username,
         email: values.email,
         password: values.password,
@@ -117,7 +109,7 @@ const UserTable: React.FC = () => {
         <TableActions
           record={record}
           actions={[
-              {
+            {
               key: "delete",
               label: "Xóa",
               icon: <DeleteFilled style={{ color: "red" }} />,
@@ -138,7 +130,9 @@ const UserTable: React.FC = () => {
                   refresh();
                 } catch (err: any) {
                   console.error(err);
-                  toast.error(err?.data?.message || "Không thể xoá người dùng!");
+                  toast.error(
+                    err?.data?.message || "Không thể xoá người dùng!"
+                  );
                 }
               },
             },
@@ -162,8 +156,7 @@ const UserTable: React.FC = () => {
             <Button
               type="primary"
               icon={<PlusOutlined />}
-              onClick={() => setIsCreateModalVisible(true)}
-            >
+              onClick={() => setIsCreateModalVisible(true)}>
               Thêm mới
             </Button>
           }
@@ -192,40 +185,34 @@ const UserTable: React.FC = () => {
         onOk={handleCreateUser}
         okButtonProps={{ loading: creating }}
         okText="Tạo mới"
-        cancelText="Hủy"
-      >
+        cancelText="Hủy">
         <Form layout="vertical" form={createForm}>
           <Form.Item
             name="username"
             label="Tên người dùng"
-            rules={[{ required: true }]}
-          >
+            rules={[{ required: true }]}>
             <Input placeholder="Nhập username" />
           </Form.Item>
 
           <Form.Item
             name="email"
             label="Email"
-            rules={[{ required: true, type: "email" }]}
-          >
+            rules={[{ required: true, type: "email" }]}>
             <Input placeholder="Nhập email" />
           </Form.Item>
 
           <Form.Item
             name="password"
             label="Mật khẩu"
-            rules={[{ required: true }]}
-          >
+            rules={[{ required: true }]}>
             <Input.Password placeholder="Nhập mật khẩu" />
           </Form.Item>
           <Form.Item
             name="gender"
             label="Giới tính"
             rules={[{ required: true }]}
-            initialValue="MALE"
-          >
+            initialValue="MALE">
             <Select>
-
               <Option value="MALE">MALE</Option>
               <Option value="FEMALE">FEMALE</Option>
               <Option value="OTHER">OTHER</Option>
@@ -235,8 +222,7 @@ const UserTable: React.FC = () => {
             name="role"
             label="Vai trò"
             rules={[{ required: true }]}
-            initialValue="LEARNER"
-          >
+            initialValue="LEARNER">
             <Select>
               <Option value="LEARNER">LEARNER</Option>
               <Option value="ADMIN">ADMIN</Option>

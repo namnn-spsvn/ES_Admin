@@ -7,15 +7,7 @@ import {
   useCreateMockTestQuestionMutation,
 } from "../../apis";
 
-import {
-  Card,
-  Typography,
-  Button,
-  Input,
-  Modal,
-  Row,
-  Col,
-} from "antd";
+import { Card, Typography, Button, Input, Modal, Row, Col } from "antd";
 
 import { toast, ToastContainer } from "react-toastify";
 
@@ -35,8 +27,7 @@ function OptionCard({ option, onChange, onSelectCorrect }: any) {
         background: option.is_correct ? "#f6ffed" : "#fafafa",
         border: option.is_correct ? "2px solid #52c41a" : "1px solid #eee",
         borderRadius: 8,
-      }}
-    >
+      }}>
       <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
         <Input
           addonBefore={option.label}
@@ -51,8 +42,7 @@ function OptionCard({ option, onChange, onSelectCorrect }: any) {
             padding: "0 8px",
             background: option.is_correct ? "#52c41a" : "#fff",
             color: option.is_correct ? "#fff" : "#333",
-          }}
-        >
+          }}>
           {option.is_correct ? "✓" : "✗"}
         </Button>
       </div>
@@ -68,7 +58,7 @@ export default function Excercise() {
   const testId = params.id as string;
 
   const { data: apiData, refetch } = useGetMockTestQuestionsQuery(testId);
-  console.log("apidata", apiData)
+  console.log("apidata", apiData);
   const questions =
     apiData?.items?.map((item: any) => {
       const q = item.question;
@@ -104,7 +94,7 @@ export default function Excercise() {
   useEffect(() => {
     if (!q) return;
     setQuestionText(q.question_text);
-    setOptions(q.options.map((o) => ({ ...o })));
+    setOptions(q.options.map((o: any) => ({ ...o })));
   }, [current, apiData]);
 
   const [updateQuestion] = useUpdateMockTestQuestionMutation();
@@ -149,16 +139,15 @@ export default function Excercise() {
   };
 
   const handleDelete = async () => {
+    try {
+      await deleteQuestion(q.question_id).unwrap();
+      toast.success("Đã xoá câu hỏi!");
 
-        try {
-          await deleteQuestion(q.question_id).unwrap();
-          toast.success("Đã xoá câu hỏi!");
-
-          setCurrent((prev) => Math.max(0, prev - 1));
-          refetch();
-        } catch (err) {
-          toast.error("Xoá thất bại, vui lòng thử lại!");
-        }
+      setCurrent((prev) => Math.max(0, prev - 1));
+      refetch();
+    } catch (err) {
+      toast.error("Xoá thất bại, vui lòng thử lại!");
+    }
   };
 
   const handleCreate = async () => {
@@ -209,7 +198,6 @@ export default function Excercise() {
     }
   };
 
-
   /* ===========================================================
      UI
   ============================================================ */
@@ -223,8 +211,7 @@ export default function Excercise() {
           {q && (
             <Card
               title={<Title level={4}>Câu {current + 1}</Title>}
-              style={{ borderRadius: 12 }}
-            >
+              style={{ borderRadius: 12 }}>
               {/* Question */}
               <Card size="small" style={{ marginBottom: 16 }}>
                 <Input.TextArea
@@ -242,7 +229,7 @@ export default function Excercise() {
                     <Col span={12} key={idx}>
                       <OptionCard
                         option={opt}
-                        onChange={(v) => {
+                        onChange={(v: any) => {
                           const u = [...options];
                           u[idx].text = v;
                           setOptions(u);
@@ -260,9 +247,18 @@ export default function Excercise() {
                   ))}
                 </Row>
 
-                <div style={{ marginTop: 20, display: "flex", justifyContent: "space-between" }}>
-                  <Button danger onClick={handleDelete}>Xóa</Button>
-                  <Button type="primary" onClick={handleSave}>Lưu</Button>
+                <div
+                  style={{
+                    marginTop: 20,
+                    display: "flex",
+                    justifyContent: "space-between",
+                  }}>
+                  <Button danger onClick={handleDelete}>
+                    Xóa
+                  </Button>
+                  <Button type="primary" onClick={handleSave}>
+                    Lưu
+                  </Button>
                 </div>
               </Card>
             </Card>
@@ -277,15 +273,13 @@ export default function Excercise() {
                 display: "grid",
                 gridTemplateColumns: "repeat(5, 1fr)",
                 gap: 10,
-              }}
-            >
-              {questions.map((_, i) => (
+              }}>
+              {questions.map((_: any, i: any) => (
                 <Button
                   key={i}
                   type={i === current ? "primary" : "default"}
                   shape="circle"
-                  onClick={() => setCurrent(i)}
-                >
+                  onClick={() => setCurrent(i)}>
                   {i + 1}
                 </Button>
               ))}
@@ -295,8 +289,7 @@ export default function Excercise() {
               type="dashed"
               block
               style={{ marginTop: 16 }}
-              onClick={() => setIsCreateModal(true)}
-            >
+              onClick={() => setIsCreateModal(true)}>
               + Thêm câu hỏi
             </Button>
           </Card>
@@ -310,8 +303,7 @@ export default function Excercise() {
         title="Thêm câu hỏi mới"
         open={isCreateModal}
         onCancel={() => setIsCreateModal(false)}
-        onOk={handleCreate}
-      >
+        onOk={handleCreate}>
         <Input.TextArea
           rows={2}
           placeholder="Nhập câu hỏi..."
@@ -325,7 +317,7 @@ export default function Excercise() {
             <Col span={12} key={idx}>
               <OptionCard
                 option={opt}
-                onChange={(v) => {
+                onChange={(v: any) => {
                   const u = [...newOptions];
                   u[idx].text = v;
                   setNewOptions(u);

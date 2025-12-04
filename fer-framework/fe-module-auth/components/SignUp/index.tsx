@@ -22,7 +22,7 @@ function SignUp() {
       setOpenVerify(true);
       toast.success(data?.message || "Đã gửi code về email của bạn!");
     } catch (error) {
-      toast.success(error?.message || "Lỗi xác thực");
+      toast.success((error as any)?.message || "Lỗi xác thực");
     }
   };
 

@@ -35,7 +35,9 @@ function ProfileModal(props: IProps) {
 
   const userInfor = useSelector((state: any) => authSelectors.getUser(state));
 
-  const { data, refetch } = useGetUserQuery({ id: userInfor?.user?.id });
+  const { data, refetch } = useGetUserQuery({
+    id: userInfor?.user?._id as any,
+  });
 
   const [editUser, { isLoading }] = useEditUserMutation();
 
@@ -45,16 +47,16 @@ function ProfileModal(props: IProps) {
 
   const handleUpdateInfo = async (values: any) => {
     try {
-      await editUser(
-        {
+      await editUser({
+        body: {
           full_name: values.full_name,
           gender: values.gender,
           age: values.age,
           occupation: values.occupation,
           avatar_url: values.avatar_url,
         },
-        { id: userInfor?.user?.id }
-      ).unwrap();
+        params: { id: userInfor?.user?._id as string },
+      }).unwrap();
 
       refetch();
       setIsEdit(true);

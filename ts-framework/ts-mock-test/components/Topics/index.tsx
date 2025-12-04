@@ -1,13 +1,6 @@
 import ATable from "@/fer-framework/fe-component/web/ATable";
 import React, { useState } from "react";
-import {
-  Typography,
-  Modal,
-  Form,
-  Input,
-  Button,
-  InputNumber,
-} from "antd";
+import { Typography, Modal, Form, Input, Button, InputNumber } from "antd";
 import { DeleteFilled, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import { ColumnProps } from "antd/es/table";
 
@@ -27,7 +20,6 @@ import HeaderOperation from "@/fer-framework/fe-component/web/ATable/HeaderOpera
 import TableActions from "@/fer-framework/fe-component/web/ATable/TableActions";
 
 const MockTestTable: React.FC = () => {
-
   const router = useRouter();
   // ================= API HOOKS =================
   const { data: testData } = useGetMockTestsQuery({});
@@ -47,6 +39,7 @@ const MockTestTable: React.FC = () => {
   } = useHookTable({
     useHookApi: useGetMockTestsQuery,
     config: ["title"],
+    paramsApi: {},
   });
 
   // ================= STATE =================
@@ -165,10 +158,9 @@ const MockTestTable: React.FC = () => {
             {
               key: "edit_questions",
               label: "Chỉnh sửa câu hỏi",
-              icon: <EditOutlined style={{ color: "#1677ff" }} />,
-              action: () => router.push(`/mock_test/${record._id}`)
+              icon: <EditOutlined />,
+              action: () => router.push(`/mock_test/${record._id}`),
             },
-
           ]}
         />
       ),
@@ -189,8 +181,7 @@ const MockTestTable: React.FC = () => {
             <Button
               type="primary"
               icon={<PlusOutlined />}
-              onClick={() => setIsCreateModalVisible(true)}
-            >
+              onClick={() => setIsCreateModalVisible(true)}>
               Thêm mới
             </Button>
           }
@@ -218,26 +209,26 @@ const MockTestTable: React.FC = () => {
         }}
         onOk={handleCreate}
         okButtonProps={{ loading: creating }}
-        width={600}
-      >
+        width={600}>
         <Form layout="vertical" form={createForm}>
-          <Form.Item name="title" label="Tên đề thi" rules={[{ required: true }]}>
+          <Form.Item
+            name="title"
+            label="Tên đề thi"
+            rules={[{ required: true }]}>
             <Input />
           </Form.Item>
 
           <Form.Item
             name="description"
             label="Mô tả"
-            rules={[{ required: true }]}
-          >
+            rules={[{ required: true }]}>
             <Input.TextArea rows={3} />
           </Form.Item>
 
           <Form.Item
             name="duration_minutes"
             label="Thời lượng (phút)"
-            rules={[{ required: true }]}
-          >
+            rules={[{ required: true }]}>
             <InputNumber min={1} style={{ width: "100%" }} />
           </Form.Item>
         </Form>
@@ -250,18 +241,19 @@ const MockTestTable: React.FC = () => {
         onCancel={() => setIsEditModalVisible(false)}
         onOk={handleSaveEdit}
         okButtonProps={{ loading: updating }}
-        width={600}
-      >
+        width={600}>
         <Form layout="vertical" form={editForm}>
-          <Form.Item name="title" label="Tên đề thi" rules={[{ required: true }]}>
+          <Form.Item
+            name="title"
+            label="Tên đề thi"
+            rules={[{ required: true }]}>
             <Input />
           </Form.Item>
 
           <Form.Item
             name="duration_minutes"
             label="Thời lượng (phút)"
-            rules={[{ required: true }]}
-          >
+            rules={[{ required: true }]}>
             <InputNumber min={1} style={{ width: "100%" }} />
           </Form.Item>
         </Form>

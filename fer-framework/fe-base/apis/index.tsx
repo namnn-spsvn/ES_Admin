@@ -7,7 +7,11 @@ import {
 import { getToken } from "../uils/getToken";
 
 const baseQuery = fetchBaseQuery({
+<<<<<<< HEAD
   baseUrl: "https://apiesenglish-y99l.onrender.com/api",
+=======
+  baseUrl: process.env.NEXT_PUBLIC_API_URL,
+>>>>>>> 94b768043cdc610bd1d1050c470e39b6e04952ee
   prepareHeaders: (headers, { getState, endpoint }) => {
     headers.set("Content-Type", "application/json");
     const state = getState();
@@ -116,15 +120,15 @@ export const deleteBaseApi = <DeleteParams,>(
       baseQueryReturnValue.data,
   });
 
-export const createEndpoints = (
-  url: string,
-  slide: string,
-  builder: EndpointBuilder<BaseQueryFn, any, any>,
-  partial?: Partial<ReturnType<typeof builder.query>>
-) => ({
-  [`get${slide}`]: getBaseApi(url, builder, partial),
-  [`post${slide}`]: postBaseApi(url, builder),
-  [`put${slide}`]: putBaseApi(url, builder, partial),
-  [`patch${slide}`]: patchBaseApi(url, builder, partial),
-  [`delete${slide}`]: deleteBaseApi(url, builder, partial),
-});
+// export const createEndpoints = (
+//   url: string,
+//   slide: string,
+//   builder: EndpointBuilder<BaseQueryFn, any, any>,
+//   partial?: Partial<ReturnType<typeof builder.query>>
+// ) => ({
+//   [`get${slide}`]: getBaseApi(url, builder, partial),
+//   [`post${slide}`]: postBaseApi(url, builder),
+//   [`put${slide}`]: putBaseApi(url, builder, partial),
+//   [`patch${slide}`]: patchBaseApi(url, builder, partial),
+//   [`delete${slide}`]: deleteBaseApi(url, builder, partial),
+// });

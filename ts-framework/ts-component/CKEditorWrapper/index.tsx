@@ -87,7 +87,7 @@ function CKEditorWrapper(props: IProps) {
           supportAllValues: true,
         },
         fullscreen: {
-          onEnterCallback: (container) =>
+          onEnterCallback: (container: any) =>
             container.classList.add(
               "editor-container",
               "editor-container_classic-editor",
@@ -114,11 +114,13 @@ function CKEditorWrapper(props: IProps) {
 
   return (
     <div
-      style={{
-        "--editor-height": `${height}px`,
-        "--editor-background": mode === "dark" ? "#1e1e1e" : "#ffffff",
-        "--editor-color": mode === "dark" ? "#ffffff" : "#000000",
-      }}>
+      style={
+        {
+          "--editor-height": `${height}px`,
+          "--editor-background": mode === "dark" ? "#1e1e1e" : "#ffffff",
+          "--editor-color": mode === "dark" ? "#ffffff" : "#000000",
+        } as React.CSSProperties
+      }>
       {ClassicEditor && editorConfig && (
         <CKEditor
           data={initialValues}

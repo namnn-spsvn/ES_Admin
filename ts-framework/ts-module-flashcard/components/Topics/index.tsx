@@ -1,15 +1,12 @@
 import ATable from "@/fer-framework/fe-component/web/ATable";
 import React, { useMemo, useState } from "react";
+import { Typography, Modal, Form, Input, Select, Button, message } from "antd";
 import {
-  Typography,
-  Modal,
-  Form,
-  Input,
-  Select,
-  Button,
-  message,
-} from "antd";
-import { DeleteFilled, EditOutlined, PlusOutlined, SoundOutlined } from "@ant-design/icons";
+  DeleteFilled,
+  EditOutlined,
+  PlusOutlined,
+  SoundOutlined,
+} from "@ant-design/icons";
 import { ColumnProps } from "antd/es/table";
 import {
   useCreateFlashcardMutation,
@@ -57,6 +54,7 @@ const FlashcardTable: React.FC = () => {
   } = useHookTable({
     useHookApi: useGetFlashcardByIdQuery,
     config: ["word", "meaning_vi"],
+    paramsApi: {},
   });
 
   // ================= STATE =================
@@ -68,19 +66,22 @@ const FlashcardTable: React.FC = () => {
 
   const [form] = Form.useForm();
 
-  //state tạo mới 
+  //state tạo mới
   const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
   const [createForm] = Form.useForm();
-  const [createPreviewImage, setCreatePreviewImage] = useState<string | null>(null);
-  const [createPreviewAudio, setCreatePreviewAudio] = useState<string | null>(null);
+  const [createPreviewImage, setCreatePreviewImage] = useState<string | null>(
+    null
+  );
+  const [createPreviewAudio, setCreatePreviewAudio] = useState<string | null>(
+    null
+  );
 
-  // API 
+  // API
   const [updateFlashcard, { isLoading: updating }] =
     useUpdateFlashcardMutation();
   const [createFlashcard, { isLoading: creating }] =
     useCreateFlashcardMutation();
-  const [deleteFlashcard] =
-    useDeleteFlashcardMutation();
+  const [deleteFlashcard] = useDeleteFlashcardMutation();
   // chỉnh sauwr
   const handleEdit = (record: any) => {
     setSelectedFlashcard(record);
@@ -114,7 +115,6 @@ const FlashcardTable: React.FC = () => {
       toast.error("Không thể tạo flashcard!");
     }
   };
-
 
   const handleCancel = () => {
     setIsModalVisible(false);
@@ -182,7 +182,6 @@ const FlashcardTable: React.FC = () => {
       key: "action",
       align: "center",
       render: (_, record) => (
-
         <TableActions
           record={record}
           actions={[
@@ -190,7 +189,9 @@ const FlashcardTable: React.FC = () => {
               key: "edit",
               label: "Chỉnh sửa",
               icon: <EditOutlined></EditOutlined>,
-              action: (record) => { handleEdit(record) }
+              action: (record: any) => {
+                handleEdit(record);
+              },
             },
             {
               key: "delete",
@@ -215,13 +216,10 @@ const FlashcardTable: React.FC = () => {
                   console.error(err);
                   toast.error("Không thể xoá flashcard!");
                 }
-              }
+              },
             },
-
           ]}
-
         />
-
       ),
     },
   ];
@@ -239,8 +237,7 @@ const FlashcardTable: React.FC = () => {
             <Button
               type="primary"
               icon={<PlusOutlined />}
-              onClick={() => setIsCreateModalVisible(true)}
-            >
+              onClick={() => setIsCreateModalVisible(true)}>
               Thêm mới
             </Button>
           }
@@ -258,7 +255,6 @@ const FlashcardTable: React.FC = () => {
         />
       </ACard>
 
-
       {/* ====================== EDIT MODAL ====================== */}
       <Modal
         title="Chỉnh sửa Flashcard"
@@ -268,8 +264,7 @@ const FlashcardTable: React.FC = () => {
         okButtonProps={{ loading: updating }}
         width={750}
         okText="Lưu thay đổi"
-        cancelText="Hủy"
-      >
+        cancelText="Hủy">
         <Form form={form} layout="vertical">
           <Form.Item name="word" label="Từ vựng" rules={[{ required: true }]}>
             <Input />
@@ -296,9 +291,7 @@ const FlashcardTable: React.FC = () => {
           </Form.Item>
 
           <Form.Item name="image_url" label="Link ảnh">
-            <Input
-              onChange={(e) => setPreviewImage(e.target.value)}
-            />
+            <Input onChange={(e) => setPreviewImage(e.target.value)} />
             {previewImage && (
               <img
                 src={previewImage}
@@ -319,8 +312,7 @@ const FlashcardTable: React.FC = () => {
               <Button
                 style={{ marginTop: 8 }}
                 icon={<SoundOutlined />}
-                onClick={() => new Audio(previewAudio).play()}
-              >
+                onClick={() => new Audio(previewAudio).play()}>
                 Nghe thử
               </Button>
             )}
@@ -351,8 +343,7 @@ const FlashcardTable: React.FC = () => {
         okButtonProps={{ loading: creating }}
         width={750}
         okText="Tạo mới"
-        cancelText="Hủy"
-      >
+        cancelText="Hủy">
         <Form layout="vertical" form={createForm}>
           <Form.Item name="word" label="Từ vựng" rules={[{ required: true }]}>
             <Input />
@@ -400,14 +391,16 @@ const FlashcardTable: React.FC = () => {
               <Button
                 style={{ marginTop: 8 }}
                 icon={<SoundOutlined />}
-                onClick={() => new Audio(createPreviewAudio).play()}
-              >
+                onClick={() => new Audio(createPreviewAudio).play()}>
                 Nghe thử
               </Button>
             )}
           </Form.Item>
 
-          <Form.Item name="topic_id" label="Chủ đề" rules={[{ required: true }]}>
+          <Form.Item
+            name="topic_id"
+            label="Chủ đề"
+            rules={[{ required: true }]}>
             <Select placeholder="Chọn chủ đề">
               {topics.map((t: any) => (
                 <Option key={t._id} value={t._id}>
@@ -418,7 +411,6 @@ const FlashcardTable: React.FC = () => {
           </Form.Item>
         </Form>
       </Modal>
-
     </div>
   );
 };

@@ -53,7 +53,7 @@ function ChatbotWrapper() {
       path: "ai_response",
     },
     ai_response: {
-      message: async (params) => {
+      message: async (params: any) => {
         const userQuestion = params.userInput;
         const response = await callGeminiAPI(userQuestion);
         return response;
@@ -62,7 +62,7 @@ function ChatbotWrapper() {
     },
   };
 
-  return <ChatBot styles={styles} settings={settings} flow={flow} />;
+  return <ChatBot styles={styles} settings={settings as any} flow={flow} />;
 }
 
 export default ChatbotWrapper;

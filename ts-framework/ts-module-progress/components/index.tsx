@@ -115,13 +115,13 @@ function Progress() {
                 key: "edit",
                 label: "Chỉnh sửa",
                 icon: <EditOutlined />,
-                action: (record) => {},
+                action: (record: any) => {},
               },
               {
                 key: "delete",
                 label: "Xóa",
                 icon: <DeleteFilled style={{ color: "red" }} />,
-                action: (record) => {},
+                action: (record: any) => {},
               },
             ]}
           />
@@ -139,6 +139,7 @@ function Progress() {
   } = useHookTable({
     useHookApi: useGetFlashCardQuery,
     config: ["word", "phonetic", "part_of_speech", "meaning_vi", "example_en"],
+    paramsApi: {},
   });
 
   return (

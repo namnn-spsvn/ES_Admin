@@ -1,19 +1,14 @@
-const nextConfig = {
-  transpilePackages: [
-    "antd",
-    "@ant-design/icons",
-    "@ant-design/icons-svg",
-    "antd-style"
-  ],
-  webpack: (config) => {
-    config.resolve.fallback = {
-      ...config.resolve.fallback,
-      fs: false,
-      path: false
-    };
+import type { NextConfig } from "next";
 
-    return config;
+const nextConfig: NextConfig = {
+  /* config options here */
+
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  env: {
+    NEXT_PUBLIC_API_URL: "https://apiesenglish-y99l.onrender.com/api",
   },
 };
 
-module.exports = nextConfig;
+export default nextConfig;

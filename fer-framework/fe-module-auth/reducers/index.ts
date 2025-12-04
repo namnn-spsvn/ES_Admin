@@ -3,7 +3,7 @@ import { authApis } from "../apis";
 
 // Kiểu dữ liệu cho thông tin user
 interface UserProfile {
-  id: string;
+  _id: string;
   username: string;
   email: string;
   role: string;

@@ -1,8 +1,14 @@
 import { Tabs, TabsProps } from "antd";
-import React from "react";
+import React, { useState } from "react";
 import LevelCard from "../LevelCard";
 
 function Levels() {
+  const [active, setActive] = useState("Beginner");
+
+  const onChange = (key: string) => {
+    setActive(key);
+  };
+
   const items: TabsProps["items"] = [
     {
       key: "1",
@@ -11,6 +17,7 @@ function Levels() {
           title="Cấp độ cơ bản"
           code="Beginner"
           desc="Dành cho người mới bắt đầu"
+          isActive={active === "Beginner"}
         />
       ),
       children: `Content of tab 1`,
@@ -22,6 +29,7 @@ function Levels() {
           title="Cấp độ trung cấp"
           code="Intermediate"
           desc="Dành cho người đã có nền tảng"
+          isActive={active === "Intermediate"}
         />
       ),
       children: `Content of tab 2`,
@@ -33,18 +41,21 @@ function Levels() {
           title="Cấp độ nâng cao"
           code="Advanced"
           desc="Dành cho người đã thành thạo"
+          isActive={active === "Advanced"}
         />
       ),
-      children: <div>
-        fsdafads
-      </div>,
+      children: <div>fsdafads</div>,
     },
   ];
   return (
     <div>
-      {" "}
       Chủ đề
-      <Tabs tabPosition="top" defaultActiveKey="1" items={items} />
+      <Tabs
+        tabPosition="top"
+        defaultActiveKey="1"
+        items={items}
+        onChange={onChange}
+      />
     </div>
   );
 }

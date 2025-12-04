@@ -34,11 +34,11 @@ export const authApis = baseApi.injectEndpoints({
       password: string;
     }>("/auth/register", builder),
 
-    getUser: getBaseApi<{ id: number }>("/users/profile", builder, {
+    getUser: getBaseApi<{ id: string }>("/users/profile", builder, {
       keepUnusedDataFor: 0,
     }),
 
-    editUser: putBaseApi<BODY_UPDATE, { id: number }>(
+    editUser: putBaseApi<BODY_UPDATE, { id: string }>(
       "/users/profile",
       builder
     ),

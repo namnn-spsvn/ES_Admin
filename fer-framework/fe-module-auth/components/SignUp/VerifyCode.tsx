@@ -37,7 +37,7 @@ export const VerifyCode = (props: IProps) => {
       onCancelModal();
       toast.success(register?.data?.message || "Tạo tài khoản mới thanh cong");
     } catch (error) {
-      toast.error(err.error?.message || "Lỗi xác thực");
+      toast.error((error as any).error?.message || "Lỗi xác thực");
     }
   };
 

@@ -51,7 +51,10 @@ function TopicTable(props: IProps) {
 
   const levelOptions = Array.from(
     new Map(
-      (dataSource || []).map((item: any) => [item.level_id?._id, item.level_id?.name])
+      (dataSource || []).map((item: any) => [
+        item.level_id?._id,
+        item.level_id?.name,
+      ])
     )
   )
     .filter(([id, name]) => id && name)
@@ -81,8 +84,7 @@ function TopicTable(props: IProps) {
             border: `1px solid #6a11cb`,
             width: 100,
           }}
-          color="#6b11cb53"
-        >
+          color="#6b11cb53">
           {record.level_id.name}
         </Tag>
       ),
@@ -109,8 +111,10 @@ function TopicTable(props: IProps) {
                 key: "edit",
                 label: "Chỉnh sửa",
                 icon: <EditOutlined />,
-                action: (record) => {
-                  router.push(`/skills/listening/${record.title}/${record.level_id._id}/${record._id}`);
+                action: (record: any) => {
+                  router.push(
+                    `/skills/listening/${record.title}/${record.level_id._id}/${record._id}`
+                  );
                 },
               },
               {
@@ -120,7 +124,9 @@ function TopicTable(props: IProps) {
                 action: async (record: any) => {
                   const topicId = record._id;
 
-                  const isConfirmed = window.confirm("Bạn có chắc chắn muốn xóa topic này?");
+                  const isConfirmed = window.confirm(
+                    "Bạn có chắc chắn muốn xóa topic này?"
+                  );
 
                   if (!isConfirmed) {
                     return;
@@ -132,7 +138,6 @@ function TopicTable(props: IProps) {
                     message.error("Vui lòng đăng nhập lại.");
                     return;
                   }
-
 
                   try {
                     const response = await deleteTopic(topicId).unwrap();
@@ -155,7 +160,6 @@ function TopicTable(props: IProps) {
     },
   ];
 
-
   return (
     <div>
       <ToastContainer position="top-right" autoClose={3000} />
@@ -165,12 +169,10 @@ function TopicTable(props: IProps) {
           justifyContent: "space-between",
           alignItems: "center",
           marginBottom: 12,
-        }}
-      >
+        }}>
         <Typography.Title
           level={4}
-          style={{ margin: 0, color: "#6a11cb", fontWeight: 600 }}
-        >
+          style={{ margin: 0, color: "#6a11cb", fontWeight: 600 }}>
           Danh sách Topic
         </Typography.Title>
       </div>
@@ -180,8 +182,7 @@ function TopicTable(props: IProps) {
             <Button
               type="primary"
               icon={<PlusOutlined />}
-              onClick={() => router.push(`/skills/listening/create/`)}
-            >
+              onClick={() => router.push(`/skills/listening/create/`)}>
               Thêm mới
             </Button>
           }

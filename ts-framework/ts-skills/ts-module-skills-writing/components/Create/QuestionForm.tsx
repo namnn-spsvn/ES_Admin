@@ -1,152 +1,172 @@
 "use client";
 import React, { useState } from "react";
-import { Card, Input, Row, Col, Button, Typography, Space, Divider } from "antd";
+import {
+  Card,
+  Input,
+  Row,
+  Col,
+  Button,
+  Typography,
+  Space,
+  Divider,
+} from "antd";
 import OptionCard from "../OptionCard";
 import {
-    useCreateContentMutation,
-    useCreateQuestionMutation,
-    useCreateQuestionOptionsMutation,
+  useCreateContentMutation,
+  useCreateQuestionMutation,
+  useCreateQuestionOptionsMutation,
 } from "../../apis/index";
 import { toast, ToastContainer } from "react-toastify";
 import UploadVideo from "@/fer-framework/fe-module-upload/components/UploadVideo";
-import { PlusOutlined, SoundOutlined, PictureOutlined } from "@ant-design/icons";
+import {
+  PlusOutlined,
+  SoundOutlined,
+  PictureOutlined,
+} from "@ant-design/icons";
 import UploadFileBase from "@/fer-framework/fe-module-upload/components/UploadFile";
+import { inter } from "@/fer-framework/fe-global/assets";
 
 const { Text, Title } = Typography;
 
-export default function QuestionForm({ title, level, topicId, onSave }) {
-    const [audioUrl, setAudioUrl] = useState("");
-    const [imageUrl, setImageUrl] = useState("");
-    const [bodyText, setBodyText] = useState("");
-    const [questionText, setQuestionText] = useState("");
-    const [questionNumber, setQuestionNumber] = useState(1);
+interface Props {
+  title: string;
+  level: string;
+  topicId: string;
+  onSave: () => void;
+}
 
-    const [options, setOptions] = useState([
-        { label: "A", option_text: "", is_correct: false },
-        { label: "B", option_text: "", is_correct: false },
-        { label: "C", option_text: "", is_correct: false },
-        { label: "D", option_text: "", is_correct: false },
-    ]);
+export default function QuestionForm({ title, level, topicId, onSave }: Props) {
+  const [audioUrl, setAudioUrl] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const [bodyText, setBodyText] = useState("");
+  const [questionText, setQuestionText] = useState("");
+  const [questionNumber, setQuestionNumber] = useState(1);
 
-    const handleSaveVideo = (url: any) => setAudioUrl(url);
-    const handleSaveImage = (url: any) => setImageUrl(url);
-    const [createContent, { isLoading: isCreatingContent }] = useCreateContentMutation();
-    const [createQuestion, { isLoading: isCreatingQuestion }] = useCreateQuestionMutation();
-    const [createQuestionOptions, { isLoading: isCreatingOptions }] =
-        useCreateQuestionOptionsMutation();
+  const [options, setOptions] = useState([
+    { label: "A", option_text: "", is_correct: false },
+    { label: "B", option_text: "", is_correct: false },
+    { label: "C", option_text: "", is_correct: false },
+    { label: "D", option_text: "", is_correct: false },
+  ]);
 
-    const isSaving = isCreatingContent || isCreatingQuestion || isCreatingOptions;
+  const handleSaveVideo = (url: any) => setAudioUrl(url);
+  const handleSaveImage = (url: any) => setImageUrl(url);
+  const [createContent, { isLoading: isCreatingContent }] =
+    useCreateContentMutation();
+  const [createQuestion, { isLoading: isCreatingQuestion }] =
+    useCreateQuestionMutation();
+  const [createQuestionOptions, { isLoading: isCreatingOptions }] =
+    useCreateQuestionOptionsMutation();
 
-    const handleSave = async () => {
-        try {
-            if (!questionText.trim()) return toast.warning("Vui lòng nhập câu hỏi!");
-            if (!bodyText.trim()) return toast.warning("Vui lòng nhập nội dung đoạn văn!");
-            if (!imageUrl.trim()) return toast.warning("Vui lòng nhập hình ảnh!");
+  const isSaving = isCreatingContent || isCreatingQuestion || isCreatingOptions;
 
-            const contentPayload: any = {
-                title: questionText,
-                type: "WRITING_PROMPT",
-                topic_id: topicId,
-                is_published: true,
-                body_text: bodyText,
-                meta: { level, skill: "WRITING" },
-                media_audio_url: audioUrl,
-            };
+  const handleSave = async () => {
+    try {
+      if (!questionText.trim()) return toast.warning("Vui lòng nhập câu hỏi!");
+      if (!bodyText.trim())
+        return toast.warning("Vui lòng nhập nội dung đoạn văn!");
+      if (!imageUrl.trim()) return toast.warning("Vui lòng nhập hình ảnh!");
 
-            if (imageUrl) contentPayload.media_image_url = imageUrl;
+      const contentPayload: any = {
+        title: questionText,
+        type: "WRITING_PROMPT",
+        topic_id: topicId,
+        is_published: true,
+        body_text: bodyText,
+        meta: { level, skill: "WRITING" },
+        media_audio_url: audioUrl,
+      };
 
-            const contentRes = await createContent(contentPayload).unwrap();
-            const contentItemId = contentRes._id;
+      if (imageUrl) contentPayload.media_image_url = imageUrl;
 
-            const questionPayload = {
-                content_item_id: contentItemId,
-                question_type: "MCQ",
-                question_text: questionText,
-                points: 5,
-                order_in_item: questionNumber,
-            };
+      const contentRes = await createContent(contentPayload).unwrap();
+      const contentItemId = contentRes._id;
 
-            const qRes = await createQuestion({ contentItemId, data: questionPayload }).unwrap();
+      const questionPayload = {
+        content_item_id: contentItemId,
+        question_type: "MCQ",
+        question_text: questionText,
+        points: 5,
+        order_in_item: questionNumber,
+      };
 
-            onSave();
-            resetForm();
-        } catch {
-            toast.error("Đã xảy ra lỗi!");
-        }
-    };
+      const qRes = await createQuestion({
+        contentItemId,
+        data: questionPayload,
+      }).unwrap();
 
-    const resetForm = () => {
-        setQuestionText("");
-        setBodyText("");
-        setAudioUrl("");
-        setImageUrl("");
+      onSave();
+      resetForm();
+    } catch {
+      toast.error("Đã xảy ra lỗi!");
+    }
+  };
 
-        setQuestionNumber(questionNumber + 1);
-    };
+  const resetForm = () => {
+    setQuestionText("");
+    setBodyText("");
+    setAudioUrl("");
+    setImageUrl("");
 
-    return (
-        <Card style={{ borderRadius: 12 }}>
+    setQuestionNumber(questionNumber + 1);
+  };
 
-            <ToastContainer />
+  return (
+    <Card style={{ borderRadius: 12 }}>
+      <ToastContainer />
 
-            <Title level={4} style={{ marginBottom: 24 }}>
-                {title} – Câu hỏi {questionNumber}
-            </Title>
+      <Title level={4} style={{ marginBottom: 24 }}>
+        {title} – Câu hỏi {questionNumber}
+      </Title>
 
-            {/* --- QUESTION TEXT --- */}
-            <Card size="small" style={{ borderRadius: 10, marginBottom: 20 }}>
-                <Text strong>Câu hỏi</Text>
-                <Input.TextArea
-                    rows={3}
-                    placeholder="Nhập câu hỏi…"
-                    value={questionText}
-                    onChange={(e) => setQuestionText(e.target.value)}
-                    style={{ marginTop: 10 }}
-                />
-            </Card>
+      {/* --- QUESTION TEXT --- */}
+      <Card size="small" style={{ borderRadius: 10, marginBottom: 20 }}>
+        <Text strong>Câu hỏi</Text>
+        <Input.TextArea
+          rows={3}
+          placeholder="Nhập câu hỏi…"
+          value={questionText}
+          onChange={(e) => setQuestionText(e.target.value)}
+          style={{ marginTop: 10 }}
+        />
+      </Card>
 
-            {/* --- BODY TEXT --- */}
-            <Card size="small" style={{ borderRadius: 10, marginBottom: 20 }}>
-                <Text strong>Đoạn văn / Nội dung</Text>
-                <Input.TextArea
-                    rows={4}
-                    placeholder="Nhập nội dung đoạn văn…"
-                    value={bodyText}
-                    onChange={(e) => setBodyText(e.target.value)}
-                    style={{ marginTop: 10 }}
-                />
-            </Card>
+      {/* --- BODY TEXT --- */}
+      <Card size="small" style={{ borderRadius: 10, marginBottom: 20 }}>
+        <Text strong>Đoạn văn / Nội dung</Text>
+        <Input.TextArea
+          rows={4}
+          placeholder="Nhập nội dung đoạn văn…"
+          value={bodyText}
+          onChange={(e) => setBodyText(e.target.value)}
+          style={{ marginTop: 10 }}
+        />
+      </Card>
 
+      {/* --- IMAGE --- */}
+      <Card size="small" style={{ borderRadius: 10, marginBottom: 20 }}>
+        <Space direction="vertical" style={{ width: "100%" }}>
+          <Space>
+            <PictureOutlined style={{ fontSize: 20 }} />
+            <Text strong>Ảnh minh họa (tuỳ chọn)</Text>
+          </Space>
 
+          <UploadFileBase
+            listType="picture-card"
+            maxCount={1}
+            accept="image/*"
+            handleSaveImage={handleSaveImage}
+            returnObject>
+            <button style={{ border: 0, background: "none" }} type="button">
+              <PlusOutlined />
+              <div style={{ marginTop: 8 }}>Upload audio</div>
+            </button>
+          </UploadFileBase>
+        </Space>
+      </Card>
 
-            {/* --- IMAGE --- */}
-            <Card size="small" style={{ borderRadius: 10, marginBottom: 20 }}>
-                <Space direction="vertical" style={{ width: "100%" }}>
-                    <Space>
-                        <PictureOutlined style={{ fontSize: 20 }} />
-                        <Text strong>Ảnh minh họa (tuỳ chọn)</Text>
-                    </Space>
-
-                    <UploadFileBase
-                        listType="picture-card"
-                        maxCount={1}
-                        accept="image/*"
-                        handleSaveImage={handleSaveImage}
-                        returnObject
-                    >
-                        <button
-                            style={{ border: 0, background: "none" }}
-                            type="button"
-                        >
-                            <PlusOutlined />
-                            <div style={{ marginTop: 8 }}>Upload audio</div>
-                        </button>
-                    </UploadFileBase>
-                </Space>
-            </Card>
-
-            {/* --- AUDIO PANEL --- */}
-            {/* <Card
+      {/* --- AUDIO PANEL --- */}
+      {/* <Card
                 size="small"
                 style={{
                     borderRadius: 10,
@@ -177,8 +197,8 @@ export default function QuestionForm({ title, level, topicId, onSave }) {
                     </UploadVideo>
                 </Space>
             </Card> */}
-            {/* --- OPTIONS --- */}
-            {/* <Card size="small" style={{ borderRadius: 10, marginBottom: 20 }}>
+      {/* --- OPTIONS --- */}
+      {/* <Card size="small" style={{ borderRadius: 10, marginBottom: 20 }}>
                 <Text strong>Đáp án</Text>
                 <Divider />
 
@@ -199,21 +219,20 @@ export default function QuestionForm({ title, level, topicId, onSave }) {
                 </Row>
             </Card> */}
 
-            <div style={{ textAlign: "right", marginTop: 24 }}>
-                <Button
-                    type="primary"
-                    size="large"
-                    loading={isSaving}
-                    onClick={handleSave}
-                    style={{
-                        paddingInline: 32,
-                        borderRadius: 8,
-                        fontWeight: 600,
-                    }}
-                >
-                    Lưu câu hỏi
-                </Button>
-            </div>
-        </Card>
-    );
+      <div style={{ textAlign: "right", marginTop: 24 }}>
+        <Button
+          type="primary"
+          size="large"
+          loading={isSaving}
+          onClick={handleSave}
+          style={{
+            paddingInline: 32,
+            borderRadius: 8,
+            fontWeight: 600,
+          }}>
+          Lưu câu hỏi
+        </Button>
+      </div>
+    </Card>
+  );
 }
