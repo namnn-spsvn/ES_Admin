@@ -239,12 +239,12 @@ function TopicTable(props: IProps) {
           dataSource={dataSource}
           columns={columns}
           pagination={pagination}
-          rowSelection={{
-            selectedRowKeys,
-            onChange: (keys) => {
-              setSelectedRowKeys(keys);
-            },
-          }}
+          // rowSelection={{
+          //   selectedRowKeys,
+          //   onChange: (keys) => {
+          //     setSelectedRowKeys(keys);
+          //   },
+          // }}
           size="middle"
         />
       </ACard>

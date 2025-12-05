@@ -193,10 +193,10 @@ const MockTestTable: React.FC = () => {
           dataSource={dataSource}
           columns={columns}
           pagination={pagination}
-          rowSelection={{
-            selectedRowKeys,
-            onChange: setSelectedRowKeys,
-          }}
+          // rowSelection={{
+          //   selectedRowKeys,
+          //   onChange: setSelectedRowKeys,
+          // }}
         />
       </ACard>
 

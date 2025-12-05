@@ -64,7 +64,7 @@ function TopicTable(props: IProps) {
     });
     setIsEditModalVisible(true);
   };
-  
+
   const handleSaveEdit = async () => {
     try {
       const values = await editForm.validateFields();
@@ -160,12 +160,12 @@ function TopicTable(props: IProps) {
                   );
                 },
               },
-                            {
-                              key: "edit",
-                              label: "Chỉnh sửa topic",
-                              icon: <EditOutlined />,
-                              action: () => handleEdit(record),
-                            },
+              {
+                key: "edit",
+                label: "Chỉnh sửa topic",
+                icon: <EditOutlined />,
+                action: () => handleEdit(record),
+              },
               {
                 key: "delete",
                 label: "Xóa",
@@ -241,53 +241,53 @@ function TopicTable(props: IProps) {
           dataSource={dataSource}
           columns={columns}
           pagination={pagination}
-          rowSelection={{
-            selectedRowKeys,
-            onChange: (keys) => {
-              setSelectedRowKeys(keys);
-            },
-          }}
+          // rowSelection={{
+          //   selectedRowKeys,
+          //   onChange: (keys) => {
+          //     setSelectedRowKeys(keys);
+          //   },
+          // }}
           size="middle"
         />
       </ACard>
 
-            {/* ================= EDIT MODAL ================= */}
-            <Modal
-              title="Chỉnh sửa Topic"
-              open={isEditModalVisible}
-              onCancel={() => setIsEditModalVisible(false)}
-              onOk={handleSaveEdit}
-              okButtonProps={{ loading: updating }}
-              width={520}
-            >
-              <Form layout="vertical" form={editForm}>
-                <Form.Item
-                  name="title"
-                  label="Tên Topic"
-                  rules={[{ required: true }]}
-                >
-                  <Input />
-                </Form.Item>
-      
-                <Form.Item name="description" label="Mô tả">
-                  <Input.TextArea rows={3} />
-                </Form.Item>
-      
-                <Form.Item
-                  name="level_id"
-                  label="Cấp độ"
-                  rules={[{ required: true }]}
-                >
-                  <Select placeholder="Chọn cấp độ">
-                    {levelOptions.map((lv) => (
-                      <Option key={lv.value} value={lv.value}>
-                        {lv.text}
-                      </Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-              </Form>
-            </Modal>
+      {/* ================= EDIT MODAL ================= */}
+      <Modal
+        title="Chỉnh sửa Topic"
+        open={isEditModalVisible}
+        onCancel={() => setIsEditModalVisible(false)}
+        onOk={handleSaveEdit}
+        okButtonProps={{ loading: updating }}
+        width={520}
+      >
+        <Form layout="vertical" form={editForm}>
+          <Form.Item
+            name="title"
+            label="Tên Topic"
+            rules={[{ required: true }]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item name="description" label="Mô tả">
+            <Input.TextArea rows={3} />
+          </Form.Item>
+
+          <Form.Item
+            name="level_id"
+            label="Cấp độ"
+            rules={[{ required: true }]}
+          >
+            <Select placeholder="Chọn cấp độ">
+              {levelOptions.map((lv) => (
+                <Option key={lv.value} value={lv.value}>
+                  {lv.text}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+        </Form>
+      </Modal>
     </div>
   );
 }

@@ -249,10 +249,10 @@ const FlashcardTable: React.FC = () => {
           dataSource={dataSource}
           columns={columns}
           pagination={pagination}
-          rowSelection={{
-            selectedRowKeys,
-            onChange: (keys) => setSelectedRowKeys(keys),
-          }}
+          // rowSelection={{
+          //   selectedRowKeys,
+          //   onChange: (keys) => setSelectedRowKeys(keys),
+          // }}
           size="large"
         />
       </ACard>

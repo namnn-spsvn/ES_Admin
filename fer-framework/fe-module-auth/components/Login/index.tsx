@@ -37,7 +37,7 @@ function FormLogin() {
 
       localStorage.setItem("userId", JSON.stringify(data.user.id));
       toast.success("Đăng nhập thành công");
-      router.push("/home");
+      router.push("/skills/listening");
     } catch (error) {
       console.log(error);
       toast.error((error as any)?.message || "Lỗi xác thực");
@@ -94,7 +94,7 @@ function FormLogin() {
           </Form.Item>
 
           <Form.Item>
-            <Button type="primary" htmlType="submit" block size="large">
+            <Button type="primary" loading={isLoading} htmlType="submit" block size="large">
               Đăng nhập
             </Button>
           </Form.Item>
