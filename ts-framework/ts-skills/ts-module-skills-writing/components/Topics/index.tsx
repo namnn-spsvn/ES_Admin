@@ -1,18 +1,19 @@
 import ATable from "@/fer-framework/fe-component/web/ATable";
-import { Button, Tag, message, Typography } from "antd";
+import { Button, Tag, message, Typography, Form, Input, Select, Modal } from "antd";
 import { ColumnProps } from "antd/es/table";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import HeaderOperation from "@/fer-framework/fe-component/web/ATable/HeaderOperation";
-import { useDeleteTopicMutation, useGetTopicsQuery } from "../../apis/index";
+import { useDeleteTopicMutation, useGetTopicsQuery, useUpdateTopicMutation } from "../../apis/index";
 import { useHookTable } from "@/fer-framework/fe-cores/common/table";
 import TableActions from "@/fer-framework/fe-component/web/ATable/TableActions";
-import { DeleteFilled, EditOutlined, PlusOutlined } from "@ant-design/icons";
+import { DeleteFilled, EditOutlined, PlusOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import ACard from "@/fer-framework/fe-component/web/ACard";
 import { usePostMutation } from "@/fer-framework/fe-cores/hooks/useApiMutaton";
 import { toast, ToastContainer } from "react-toastify";
 import { useGetContentQuery } from "../../apis/index";
+const { Option } = Select;
 interface IProps {
   skill_id: string;
   level_id: string;
@@ -42,7 +43,49 @@ function TopicTable(props: IProps) {
       level_id: level_id,
     },
   });
+
+
+
+
+
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [deleteTopic, { isLoading }] = useDeleteTopicMutation();
+  const [updateTopic, { isLoading: updating }] = useUpdateTopicMutation();
+  const [selectedRecord, setSelectedRecord] = useState<any>(null);
+  const [editForm] = Form.useForm();
+
+  const handleEdit = (record: any) => {
+    setSelectedRecord(record);
+
+    editForm.setFieldsValue({
+      title: record.title,
+      description: record.description || "",
+      level_id: record.level_id?._id,
+    });
+    setIsEditModalVisible(true);
+  };
+  
+  const handleSaveEdit = async () => {
+    try {
+      const values = await editForm.validateFields();
+      const payload = {
+        title: values.title,
+        description: values.description,
+        level_id: values.level_id,
+      };
+      await updateTopic({
+        topicId: selectedRecord._id,
+        data: payload,
+      }).unwrap();
+
+      toast.success("Cập nhật topic thành công!");
+      setIsEditModalVisible(false);
+      refresh();
+    } catch (err) {
+      toast.error("Không thể cập nhật topic!");
+    }
+  };
+
   // Tự động refresh khi component mount
   useEffect(() => {
     refresh();
@@ -109,14 +152,20 @@ function TopicTable(props: IProps) {
             actions={[
               {
                 key: "edit",
-                label: "Chỉnh sửa",
-                icon: <EditOutlined />,
+                label: "Chỉnh sửa câu hỏi",
+                icon: <QuestionCircleOutlined />,
                 action: (record: any) => {
                   router.push(
                     `/skills/writing/${record.title}/${record.level_id._id}/${record._id}`
                   );
                 },
               },
+                            {
+                              key: "edit",
+                              label: "Chỉnh sửa topic",
+                              icon: <EditOutlined />,
+                              action: () => handleEdit(record),
+                            },
               {
                 key: "delete",
                 label: "Xóa",
@@ -201,6 +250,44 @@ function TopicTable(props: IProps) {
           size="middle"
         />
       </ACard>
+
+            {/* ================= EDIT MODAL ================= */}
+            <Modal
+              title="Chỉnh sửa Topic"
+              open={isEditModalVisible}
+              onCancel={() => setIsEditModalVisible(false)}
+              onOk={handleSaveEdit}
+              okButtonProps={{ loading: updating }}
+              width={520}
+            >
+              <Form layout="vertical" form={editForm}>
+                <Form.Item
+                  name="title"
+                  label="Tên Topic"
+                  rules={[{ required: true }]}
+                >
+                  <Input />
+                </Form.Item>
+      
+                <Form.Item name="description" label="Mô tả">
+                  <Input.TextArea rows={3} />
+                </Form.Item>
+      
+                <Form.Item
+                  name="level_id"
+                  label="Cấp độ"
+                  rules={[{ required: true }]}
+                >
+                  <Select placeholder="Chọn cấp độ">
+                    {levelOptions.map((lv) => (
+                      <Option key={lv.value} value={lv.value}>
+                        {lv.text}
+                      </Option>
+                    ))}
+                  </Select>
+                </Form.Item>
+              </Form>
+            </Modal>
     </div>
   );
 }

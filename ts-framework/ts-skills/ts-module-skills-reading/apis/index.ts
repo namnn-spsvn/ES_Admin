@@ -88,6 +88,14 @@ export const contentApi = baseApi.injectEndpoints({
                 method: "DELETE",
             }),
         }),
+        //uppdate topic
+        updateTopic: builder.mutation({
+            query: ({ topicId, data }) => ({
+                url: `/admin/catalog/topics/${topicId}`,
+                method: "PUT",
+                body: data,
+            }),
+        }),
 
         //xóa content 
         deleteContent: builder.mutation({
@@ -114,6 +122,7 @@ export const topicApi = baseApi.injectEndpoints({
 
 export const { useCreateTopicMutation } = topicApi;
 export const {
+    useUpdateTopicMutation,
     useDeleteContentMutation,
     useDeleteQuestionMutation,
     useDeleteTopicMutation,

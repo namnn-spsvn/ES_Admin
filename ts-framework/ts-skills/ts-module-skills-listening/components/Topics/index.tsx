@@ -6,7 +6,7 @@ import HeaderOperation from "@/fer-framework/fe-component/web/ATable/HeaderOpera
 import { useDeleteTopicMutation, useGetTopicsQuery, useUpdateTopicMutation } from "../../apis/index";
 import { useHookTable } from "@/fer-framework/fe-cores/common/table";
 import TableActions from "@/fer-framework/fe-component/web/ATable/TableActions";
-import { DeleteFilled, EditOutlined, PlusOutlined } from "@ant-design/icons";
+import { DeleteFilled, EditOutlined, PlusOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -152,7 +152,7 @@ function TopicTable(props: IProps) {
               {
                 key: "edit",
                 label: "Chỉnh sửa câu hỏi",
-                icon: <EditOutlined />,
+                icon: <QuestionCircleOutlined />,
                 action: (record: any) => {
                   router.push(
                     `/skills/listening/${record.title}/${record.level_id._id}/${record._id}`
