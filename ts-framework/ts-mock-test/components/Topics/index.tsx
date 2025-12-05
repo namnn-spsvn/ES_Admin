@@ -1,7 +1,7 @@
 import ATable from "@/fer-framework/fe-component/web/ATable";
 import React, { useState } from "react";
 import { Typography, Modal, Form, Input, Button, InputNumber } from "antd";
-import { DeleteFilled, EditOutlined, PlusOutlined } from "@ant-design/icons";
+import { DeleteFilled, EditOutlined, PlusOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 import { ColumnProps } from "antd/es/table";
 
 import {
@@ -144,6 +144,12 @@ const MockTestTable: React.FC = () => {
           record={record}
           actions={[
             {
+              key: "edit_questions",
+              label: "Chỉnh sửa câu hỏi",
+              icon: <QuestionCircleOutlined />,
+              action: () => router.push(`/mock_test/${record._id}`),
+            },
+            {
               key: "edit",
               label: "Chỉnh sửa",
               icon: <EditOutlined />,
@@ -155,12 +161,7 @@ const MockTestTable: React.FC = () => {
               icon: <DeleteFilled style={{ color: "red" }} />,
               action: () => handleDelete(record),
             },
-            {
-              key: "edit_questions",
-              label: "Chỉnh sửa câu hỏi",
-              icon: <EditOutlined />,
-              action: () => router.push(`/mock_test/${record._id}`),
-            },
+
           ]}
         />
       ),

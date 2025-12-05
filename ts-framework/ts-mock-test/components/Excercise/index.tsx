@@ -11,14 +11,13 @@ import { Card, Typography, Button, Input, Modal, Row, Col } from "antd";
 
 import { toast, ToastContainer } from "react-toastify";
 
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { ArrowLeftOutlined } from "@ant-design/icons";
+
 
 const { Title, Text } = Typography;
 
-/* ===========================================================
-   OPTION CARD — UI giống user 100%
-=========================================================== */
 function OptionCard({ option, onChange, onSelectCorrect }: any) {
   return (
     <Card
@@ -55,6 +54,7 @@ function OptionCard({ option, onChange, onSelectCorrect }: any) {
 =========================================================== */
 export default function Excercise() {
   const params = useParams();
+  const router = useRouter();
   const testId = params.id as string;
 
   const { data: apiData, refetch } = useGetMockTestQuestionsQuery(testId);
@@ -204,7 +204,13 @@ export default function Excercise() {
   return (
     <div style={{ padding: 20, maxWidth: 860, margin: "auto" }}>
       <ToastContainer position="top-right" autoClose={3000} />
-
+      {/* BACK BUTTON */}
+      <Button
+        type="text"
+        icon={<ArrowLeftOutlined />}
+        onClick={() => router.push("/mock_test")}
+        style={{ marginBottom: 8, fontSize: 15, color: "#555" }}
+      />
       <Row gutter={20}>
         {/* LEFT */}
         <Col span={17}>
